@@ -1,0 +1,786 @@
+
+<!D<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aastha Jewellery Makers</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #060b19;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #0b132b 0%, #060b19 50%, #101c3f 100%);
+            background-size: 200% 200%;
+            animation: bgGlow 8s ease infinite;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+
+        @keyframes bgGlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @media(min-width: 1024px) {
+            .app-container {
+                max-width: 100%;
+                height: 100vh;
+                border-radius: 0;
+                border: none;
+            }
+        }
+
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #101c3f 0%, #0b132b 50%, #060b19 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+            z-index: 10;
+        }
+
+        .screen.hidden {
+            display: none;
+        }
+
+        .logo-img-large {
+            width: 130px;
+            height: 130px;
+            margin: 20px auto 10px auto;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #f39c12;
+            box-shadow: 0 0 25px rgba(243, 156, 18, 0.5);
+            display: block;
+            background: #0b132b;
+        }
+
+        .input-box {
+            background: #162238;
+            border: 1px solid #334155;
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+        }
+
+        .input-box input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: white;
+            font-size: 16px;
+            width: 100%;
+            margin-left: 10px;
+        }
+
+        .input-box input::placeholder {
+            color: #94a3b8;
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, #f39c12 0%, #d35400 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            display: block;
+            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4);
+            text-align: center;
+        }
+
+        /* Top Bar */
+        .dashboard-top-bar {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            background: rgba(11, 19, 43, 0.95);
+        }
+
+        .welcome-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .main-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 14px;
+            scrollbar-width: none;
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        .main-scroll::-webkit-scrollbar { display: none; }
+
+        /* Bada HD Promotional Banner */
+        .big-promo-banner {
+            background: linear-gradient(135deg, #1b2a4a 0%, #0d1527 100%);
+            border: 2px solid #f39c12;
+            border-radius: 16px;
+            padding: 14px;
+            margin-bottom: 14px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(243, 156, 18, 0.3);
+        }
+
+        .big-promo-banner img {
+            width: 100%;
+            height: 160px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 1px solid #f39c12;
+            margin-bottom: 10px;
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            background: linear-gradient(135deg, #1f293d 0%, #111827 100%);
+            border: 1px dashed #f39c12;
+            border-radius: 16px;
+            padding: 14px;
+            margin-bottom: 14px;
+            text-align: center;
+            display: none; /* Hidden by default for customers */
+        }
+
+        .admin-panel input {
+            background: #0b132b;
+            border: 1px solid #334155;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin: 5px;
+            font-size: 13px;
+            width: 45%;
+            outline: none;
+        }
+
+        .admin-panel button {
+            background: #2ecc71;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .admin-login-bar {
+            text-align: right;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .admin-btn-trigger {
+            background: #1e293b;
+            color: #f39c12;
+            border: 1px solid #f39c12;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        /* Exact Live Rate Card */
+        .rate-card-exact {
+            background: linear-gradient(135deg, #182442 0%, #101932 100%);
+            border: 1px solid #334155;
+            border-radius: 16px;
+            padding: 14px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        .rate-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2px;
+        }
+
+        .rate-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .rate-title img {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid #f39c12;
+        }
+
+        .rate-price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2ecc71;
+            transition: color 0.3s ease;
+        }
+
+        .rate-sub {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-bottom: 6px;
+        }
+
+        .graph-line {
+            width: 100%;
+            height: 26px;
+            position: relative;
+            margin: 4px 0;
+        }
+
+        .rate-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: #94a3b8;
+            border-top: 1px dashed rgba(255,255,255,0.1);
+            padding-top: 6px;
+        }
+
+        /* MCX Grid */
+        .mcx-container {
+            background: linear-gradient(135deg, #141f38 0%, #0b132b 100%);
+            border: 1px solid #334155;
+            border-radius: 16px;
+            padding: 14px;
+            margin: 14px 0;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 10px;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .mcx-item-left { text-align: left; }
+        .mcx-item-right { text-align: right; }
+
+        .moon-icon-box {
+            width: 45px;
+            height: 45px;
+            background: #1c2541;
+            border: 2px solid #f39c12;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin: 0 auto;
+            box-shadow: 0 0 10px rgba(243, 156, 18, 0.4);
+        }
+
+        /* Bottom Nav Bar */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            background: #0b132b;
+            padding: 10px 0;
+            border-top: 1px solid #1e293b;
+        }
+
+        .nav-link {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 11px;
+            cursor: pointer;
+        }
+        .nav-link.active { color: #f39c12; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+
+    <!-- SCREEN 1: Welcome Splash Screen -->
+    <div id="splashScreen" class="screen">
+        <div style="text-align: center; margin-top: 30px;">
+            <img src="92600.png" alt="Aastha Jewellery Logo" class="logo-img-large">
+            <h1 style="font-size: 24px; color: #ffffff; margin-bottom: 3px;">Aastha Jewellery Makers</h1>
+            <p style="font-size: 13px; color: #f39c12;">आस्था ज्वेलरी मेकर</p>
+        </div>
+
+        <div style="text-align: center; margin: 10px 0;">
+            <p style="font-size: 15px; color: #cbd5e1; margin-bottom: 8px;">Aastha Jewellery Makers mein aapka swagat hai ✨</p>
+            <p style="font-size: 11px; color: #38bdf8; margin-bottom: 10px;">✔ Most trusted keel & nathuni brand</p>
+        </div>
+
+        <button class="btn-gold" onclick="goToSignIn()">Get Started</button>
+    </div>
+
+    <!-- SCREEN 2: Sign In Screen -->
+    <div id="signInScreen" class="screen hidden">
+        <div style="max-width: 500px; margin: 40px auto; width: 100%;">
+            <div style="font-size: 26px; font-weight: bold; color: #ffffff; margin-bottom: 20px; text-align: center;">Sign in</div>
+            
+            <img src="92600.png" alt="Logo" style="width: 90px; height: 90px; border-radius: 50%; border: 2px solid #f39c12; margin: 0 auto 20px auto; display: block; object-fit: cover;">
+
+            <div class="input-box">
+                <span>👤</span>
+                <input type="text" id="userNameInput" placeholder="Your Name (e.g. Shekh Arslan)">
+            </div>
+
+            <div class="input-box">
+                <span>📞</span>
+                <input type="tel" id="userPhoneInput" placeholder="Mobile Number">
+            </div>
+        </div>
+
+        <button class="btn-gold" onclick="handleLogin()">Send OTP / Login</button>
+    </div>
+
+    <!-- SCREEN 3: Main Dashboard -->
+    <div id="dashboardScreen" class="screen hidden" style="padding: 0; justify-content: space-between;">
+        
+        <!-- Top Bar -->
+        <div class="dashboard-top-bar">
+            <div class="welcome-row">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <img src="92600.png" alt="Logo" style="width: 38px; height: 38px; border-radius: 50%; border: 1px solid #f39c12; object-fit: cover;">
+                    <div>
+                        <span style="font-size: 10px; color: #94a3b8;">Welcome 👋</span>
+                        <div id="displayName" style="font-size: 15px; font-weight: bold; color: #f39c12;">Shekh Arslan</div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <img src="92600.png" style="width: 30px; height: 30px; border-radius: 50%; border: 1px solid #f39c12;" alt="18K">
+                    <div style="width: 32px; height: 32px; background: #1c2541; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px;">🔔</div>
+                </div>
+            </div>
+            
+            <!-- Scrolling Hindi Marquee Text -->
+            <div style="overflow: hidden; white-space: nowrap; margin-top: 4px;">
+                <marquee scrollamount="4" style="font-size: 11px; color: #38bdf8;">
+                    ⭐ सबसे भरोसेमंद कील नथुनी का ब्रांड ✨, ऐप को आज ही अपडेट करें! 
+                </marquee>
+            </div>
+        </div>
+
+        <!-- Scrollable Rate Cards -->
+        <div class="main-scroll">
+            
+            <!-- Admin Login & Change PIN Bar -->
+            <div class="admin-login-bar">
+                <button class="admin-btn-trigger" id="loginBtn" onclick="verifyAdminAccess()">🔐 Admin Login</button>
+                <button class="admin-btn-trigger" id="changePinBtn" style="display:none; background:#d35400; border-color:#d35400;" onclick="changeAdminPin()">🔑 Change PIN</button>
+            </div>
+
+            <!-- SECURE ADMIN ADD ITEM PANEL -->
+            <div id="secureAdminPanel" class="admin-panel">
+                <div style="font-size: 13px; color: #f39c12; font-weight: bold; margin-bottom: 6px;">⚙️ Admin Panel (Protected)</div>
+                <input type="text" id="newItemName" placeholder="Item Name (e.g. Chain / Payal)">
+                <input type="number" id="newItemRate" placeholder="Rate in ₹">
+                <input type="text" id="adminWaNumber" placeholder="Your WhatsApp No (e.g. 918887726720)">
+                <br>
+                <button onclick="addNewJewelleryItem()">➕ Add New Item with WhatsApp</button>
+            </div>
+
+            <!-- Bada HD Promotional Banner -->
+            <div class="big-promo-banner">
+                <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600" alt="Special Jewellery Banner">
+                <div style="font-size: 15px; font-weight: bold; color: #f39c12; margin-bottom: 4px;">1.5 ग्राम ⚖️ में चैन और पेण्डेन्ट</div>
+                <div style="font-size: 12px; color: #cbd5e1; margin-bottom: 8px;">दिवाली स्पेशल ✨ शुद्धता की गारंटी ✅</div>
+                <button onclick="window.open('https://wa.me/918887726720?text=Hello%20Aastha%20Jewellery%20Makers,%20mujhe%20is%20banner%20wale%20item%20ki%20jaankari%20chahiye', '_blank')" style="background: #25d366; color: #ffffff; border: none; padding: 6px 16px; border-radius: 12px; font-size: 12px; font-weight: bold; cursor: pointer;">💬 WhatsApp Inquiry</button>
+            </div>
+
+            <!-- DYNAMIC ITEMS CONTAINER -->
+            <div id="dynamicItemsContainer"></div>
+
+            <!-- 1. 99.99 Retail -->
+            <div class="rate-card-exact">
+                <div class="rate-top">
+                    <span class="rate-title"><img src="92600.png" alt="logo"> 99.99 Retail</span>
+                    <span id="price9999" class="rate-price">₹ 149400 <span style="font-size: 11px;">▲</span></span>
+                </div>
+                <div class="rate-sub">Cash Denial</div>
+                <svg class="graph-line" viewBox="0 0 300 40">
+                    <path d="M 0 30 Q 100 25, 180 32 T 290 20" fill="none" stroke="#2ecc71" stroke-width="2"/>
+                    <circle cx="290" cy="20" r="4" fill="#f39c12"/>
+                </svg>
+                <div class="rate-footer">
+                    <span style="color: #e74c3c;">-150 • <span id="timeText1">06:25 PM</span></span>
+                    <span>H: 149850 &nbsp; L: 149400</span>
+                </div>
+            </div>
+
+            <!-- 2. 99.50 Retail -->
+            <div class="rate-card-exact">
+                <div class="rate-top">
+                    <span class="rate-title"><img src="92600.png" alt="logo"> 99.50 Retail</span>
+                    <span id="price9950" class="rate-price">₹ 148650 <span style="font-size: 11px;">▲</span></span>
+                </div>
+                <div class="rate-sub">Cash Denial</div>
+                <svg class="graph-line" viewBox="0 0 300 40">
+                    <path d="M 0 32 Q 120 28, 200 35 T 290 22" fill="none" stroke="#2ecc71" stroke-width="2"/>
+                    <circle cx="290" cy="22" r="4" fill="#f39c12"/>
+                </svg>
+                <div class="rate-footer">
+                    <span style="color: #e74c3c;">-150 • <span id="timeText2">06:25 PM</span></span>
+                    <span>H: 149100 &nbsp; L: 148650</span>
+                </div>
+            </div>
+
+            <!-- 3. Batiya APPROX -->
+            <div class="rate-card-exact" style="border: 2px solid #f39c12;">
+                <div class="rate-top">
+                    <span class="rate-title"><img src="92600.png" alt="logo"> बड़िया APPROX</span>
+                    <span id="priceBatiya" class="rate-price">₹ 227000 <span style="font-size: 11px;">▲</span></span>
+                </div>
+                <div class="rate-sub">बड़िया हाज़िर भाव में फरक हो सकता है</div>
+                <svg class="graph-line" viewBox="0 0 300 40">
+                    <path d="M 0 35 Q 110 20, 210 25 T 290 15" fill="none" stroke="#2ecc71" stroke-width="2"/>
+                    <circle cx="290" cy="15" r="4" fill="#f39c12"/>
+                </svg>
+                <div class="rate-footer">
+                    <span style="color: #2ecc71;">+1000 • <span id="timeText3">06:25 PM</span></span>
+                    <span>H: 227000 &nbsp; L: 226000</span>
+                </div>
+            </div>
+
+            <!-- 4. BANK / GPAY -->
+            <div class="rate-card-exact">
+                <div class="rate-top">
+                    <span class="rate-title"><img src="92600.png" alt="logo"> BANK / GPAY</span>
+                    <span id="priceBank" class="rate-price">₹ 153100 <span style="font-size: 11px;">▲</span></span>
+                </div>
+                <div class="rate-sub">99.50 Inc. GST</div>
+                <svg class="graph-line" viewBox="0 0 300 40">
+                    <path d="M 0 25 Q 90 18, 190 30 T 290 25" fill="none" stroke="#2ecc71" stroke-width="2"/>
+                    <circle cx="290" cy="25" r="4" fill="#f39c12"/>
+                </svg>
+                <div class="rate-footer">
+                    <span style="color: #e74c3c;">-400 • <span id="timeText4">06:25 PM</span></span>
+                    <span>H: 153750 &nbsp; L: 153100</span>
+                </div>
+            </div>
+
+            <!-- MCX Grid -->
+            <div class="mcx-container">
+                <div class="mcx-item-left">
+                    <div style="font-size: 10px; color: #94a3b8;">🥇 GOLD MCX</div>
+                    <div id="goldMcxPrice" style="font-size: 14px; font-weight: bold; color: #f39c12; margin: 2px 0;">₹ 151565</div>
+                    <div style="font-size: 9px; color: #2ecc71; background: rgba(46,204,113,0.15); padding: 2px 5px; border-radius: 4px; display: inline-block;">▲ +1964</div>
+                </div>
+                <div>
+                    <div class="moon-icon-box">🌙</div>
+                </div>
+                <div class="mcx-item-right">
+                    <div style="font-size: 10px; color: #94a3b8;">🥈 SILVER MCX</div>
+                    <div id="silverMcxPrice" style="font-size: 14px; font-weight: bold; color: #f39c12; margin: 2px 0;">₹ 225709</div>
+                    <div style="font-size: 9px; color: #2ecc71; background: rgba(46,204,113,0.15); padding: 2px 5px; border-radius: 4px; display: inline-block;">▲ +4517</div>
+                </div>
+            </div>
+
+            <!-- General WhatsApp & Share Buttons -->
+            <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 10px;">
+                <button onclick="window.open('https://wa.me/918887726720?text=Hello%20Aastha%20Jewellery%20Makers,%20mujhe%20live%20rates%20ki%20jaankari%20chahiye', '_blank')" style="background: #25d366; border: none; color: #ffffff; padding: 10px 20px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(37,211,102,0.4);">💬 WhatsApp Chat</button>
+                <button onclick="alert('Share link generated!')" style="background: linear-gradient(135deg, #f39c12 0%, #d35400 100%); border: none; color: #ffffff; padding: 10px 20px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(243,156,18,0.3);">📤 Share</button>
+            </div>
+
+            <p style="font-size: 8px; color: #64748b; text-align: center; line-height: 1.3; padding: 0 10px; margin-bottom: 10px;">
+                *Above displayed data is for information purpose only and hence can't be used for legal purposes or doing any sort of transaction.
+            </p>
+
+        </div>
+
+        <!-- Bottom Navigation Bar -->
+        <div class="bottom-nav">
+            <div class="nav-link active">
+                <div style="font-size: 15px;">🏠</div>
+                Home
+            </div>
+            <div class="nav-link" onclick="alert('Previous Day Rates opened')">
+                <div style="font-size: 15px;">⏱️</div>
+                Prev Day
+            </div>
+            <div class="nav-link" onclick="alert('Shrimukh section opened')">
+                <div style="font-size: 15px;">🌙</div>
+                Shrimukh
+            </div>
+            <div class="nav-link" onclick="alert('Branch Details:\n1. Aharaura (Dinesh Kumar - 8887726720)\n2. Sikarganj (Ramesh Kumar - 9621106661)\n3. Uchahra Fauzi (Mukesh Kumar - 8090247751)')">
+                <div style="font-size: 15px;">🎧</div>
+                Details
+            </div>
+            <div class="nav-link" onclick="alert('Extra options opened')">
+                <div style="font-size: 15px;">🎛️</div>
+                Extra
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    function goToSignIn() {
+        document.getElementById('splashScreen').classList.add('hidden');
+        document.getElementById('signInScreen').classList.remove('hidden');
+    }
+
+    function handleLogin() {
+        const name = document.getElementById('userNameInput').value.trim();
+        if(name === "") {
+            alert("Kripya apna naam darj karein!");
+            return;
+        }
+        document.getElementById('displayName').innerText = name;
+        
+        if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance("Aastha Jewellery Makers mein aapka swagat hai, " + name + " ji!");
+            utterance.lang = 'hi-IN';
+            utterance.rate = 0.8;
+            utterance.pitch = 1.2;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        alert("Aastha Jewellery Makers mein aapka swagat hai, " + name + " ji! ✨");
+        
+        document.getElementById('signInScreen').classList.add('hidden');
+        document.getElementById('dashboardScreen').classList.remove('hidden');
+        loadJewelleryItems();
+    }
+
+    // Get or Set Admin PIN securely
+    function getAdminPin() {
+        let pin = localStorage.getItem('aastha_admin_pin');
+        if(!pin) {
+            pin = "7860"; // Default secure PIN
+            localStorage.setItem('aastha_admin_pin', pin);
+        }
+        return pin;
+    }
+
+    let isAdminLoggedIn = false;
+
+    function verifyAdminAccess() {
+        let enteredPin = prompt("Enter Admin Secret PIN:");
+        if(enteredPin === getAdminPin()) {
+            isAdminLoggedIn = true;
+            document.getElementById('secureAdminPanel').style.display = "block";
+            document.getElementById('loginBtn').innerText = "✅ Admin Logged In";
+            document.getElementById('changePinBtn').style.display = "inline-block";
+            alert("Admin Access Granted Successfully!");
+            loadJewelleryItems();
+        } else if(enteredPin !== null) {
+            alert("Galat PIN hai! Access Denied.");
+        }
+    }
+
+    // Change Admin PIN Function
+    function changeAdminPin() {
+        if(!isAdminLoggedIn) {
+            alert("Pehle Admin Login karein!");
+            return;
+        }
+        let currentPin = prompt("Enter Current Admin PIN:");
+        if(currentPin === getAdminPin()) {
+            let newPin = prompt("Enter New Admin PIN:");
+            if(newPin && newPin.trim().length >= 4) {
+                localStorage.setItem('aastha_admin_pin', newPin.trim());
+                alert("Admin PIN successfully change ho gaya hai! Naya PIN yaad rakhein.");
+            } else {
+                alert("Naya PIN kam se kam 4 digits ka hona chahiye!");
+            }
+        } else if(currentPin !== null) {
+            alert("Current PIN galat hai!");
+        }
+    }
+
+    let defaultItems = [
+        { name: "🪙 Gold Chain (हवा से हल्का)", rate: 152000, wa: "918887726720" },
+        { name: "🔗 Silver Payal (चांदी पायल स्पेशल)", rate: 85000, wa: "918887726720" }
+    ];
+
+    function getStoredItems() {
+        let items = localStorage.getItem('aastha_items_v7');
+        if (!items) {
+            localStorage.setItem('aastha_items_v7', JSON.stringify(defaultItems));
+            return defaultItems;
+        }
+        return JSON.parse(items);
+    }
+
+    function loadJewelleryItems() {
+        const container = document.getElementById('dynamicItemsContainer');
+        if(!container) return;
+        
+        const items = getStoredItems();
+        container.innerHTML = "";
+
+        items.forEach((item, index) => {
+            let deleteBtnHtml = isAdminLoggedIn ? `<span style="color: #e74c3c; cursor: pointer;" onclick="deleteItem(${index})">🗑️ Delete</span>` : `<span>Certified</span>`;
+            let waNumber = item.wa || "918887726720";
+            
+            container.innerHTML += `
+                <div class="rate-card-exact">
+                    <div class="rate-top">
+                        <span class="rate-title">
+                            <img src="92600.png" alt="logo"> ${item.name}
+                        </span>
+                        <span class="rate-price" style="color: #2ecc71;">₹ ${item.rate} <span style="font-size: 11px;">▲</span></span>
+                    </div>
+                    <div class="rate-sub">Pure Hallmark Certified</div>
+                    <svg class="graph-line" viewBox="0 0 300 40">
+                        <path d="M 0 30 Q 100 25, 180 32 T 290 20" fill="none" stroke="#2ecc71" stroke-width="2"/>
+                        <circle cx="290" cy="20" r="4" fill="#f39c12"/>
+                    </svg>
+                    <div style="text-align: right; margin: 4px 0;">
+                        <button onclick="window.open('https://wa.me/${waNumber}?text=Hello,%20mujhe%20is%20item%20(${item.name})%20ke%20bare%20mein%20jaankari%20chahiye', '_blank')" style="background: #25d366; color: white; border: none; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold; cursor: pointer;">💬 Order on WhatsApp</button>
+                    </div>
+                    <div class="rate-footer">
+                        <span style="color: #2ecc71;">+500 • Live Rate</span>
+                        ${deleteBtnHtml}
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    function addNewJewelleryItem() {
+        if(!isAdminLoggedIn) {
+            alert("Pehle Admin Login karein!");
+            return;
+        }
+
+        const nameInput = document.getElementById('newItemName');
+        const rateInput = document.getElementById('newItemRate');
+        const waInput = document.getElementById('adminWaNumber');
+        
+        if(nameInput.value.trim() === "" || rateInput.value.trim() === "") {
+            alert("Kripya item ka naam aur rate dono bharein!");
+            return;
+        }
+
+        let waNumber = waInput.value.trim() !== "" ? waInput.value.trim() : "918887726720";
+
+        let items = getStoredItems();
+        items.push({ name: nameInput.value.trim(), rate: parseInt(rateInput.value), wa: waNumber });
+        localStorage.setItem('aastha_items_v7', JSON.stringify(items));
+
+        nameInput.value = "";
+        rateInput.value = "";
+        waInput.value = "";
+        loadJewelleryItems();
+        alert("Naya item successfully add ho gaya hai!");
+    }
+
+    function deleteItem(index) {
+        if(!isAdminLoggedIn) {
+            alert("Aapke paas delete karne ki permission nahi hai!");
+            return;
+        }
+
+        let items = getStoredItems();
+        items.splice(index, 1);
+        localStorage.setItem('aastha_items_v7', JSON.stringify(items));
+        loadJewelleryItems();
+    }
+
+    window.onload = function() {
+        loadJewelleryItems();
+    };
+
+    let baseGold = 151565;
+    let baseSilver = 225709;
+    let base9999 = 149400;
+    let base9950 = 148650;
+    let baseBatiya = 227000;
+    let baseBank = 153100;
+
+    setInterval(() => {
+        let gChange = Math.floor(Math.random() * 101) - 50;
+        let sChange = Math.floor(Math.random() * 101) - 50;
+        let r1Change = Math.floor(Math.random() * 61) - 30;
+        let r2Change = Math.floor(Math.random() * 61) - 30;
+
+        baseGold += gChange;
+        baseSilver += sChange;
+        base9999 += r1Change;
+        base9950 += r1Change;
+        baseBatiya += r2Change;
+        baseBank += r1Change;
+
+        updatePriceDisplay('goldMcxPrice', baseGold, gChange);
+        updatePriceDisplay('silverMcxPrice', baseSilver, sChange);
+        updatePriceDisplay('price9999', base9999, r1Change);
+        updatePriceDisplay('price9950', base9950, r1Change);
+        updatePriceDisplay('priceBatiya', baseBatiya, r2Change);
+        updatePriceDisplay('priceBank', baseBank, r1Change);
+
+        let now = new Date();
+        let timeStr = now.toLocaleTimeString();
+        document.getElementById('timeText1').innerText = timeStr;
+        document.getElementById('timeText2').innerText = timeStr;
+        document.getElementById('timeText3').innerText = timeStr;
+        document.getElementById('timeText4').innerText = timeStr;
+    }, 2500);
+
+    function updatePriceDisplay(elementId, newPrice, diff) {
+        const el = document.getElementById(elementId);
+        if(el) {
+            el.innerText = "₹ " + newPrice;
+            if(diff >= 0) {
+                el.style.color = "#2ecc71";
+            } else {
+                el.style.color = "#e74c3c";
+            }
+            setTimeout(() => {
+                el.style.color = "#f39c12";
+                if(elementId.includes('Price') && !elementId.includes('Mcx')) {
+                    el.style.color = "#2ecc71";
+                }
+            }, 800);
+        }
+    }
+</script>
+
+</body>
+</html>
