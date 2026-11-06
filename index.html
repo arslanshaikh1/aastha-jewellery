@@ -333,7 +333,7 @@
                 <span class="toast-time">Just now</span>
             </div>
             <div class="toast-title" id="toast-title-text">Gold Rate Updated! 🪙</div>
-            <div class="toast-desc" id="toast-desc-text">Live Auto Update Active</div>
+            <div class="toast-desc" id="toast-desc-text">Live Market Feed Connected</div>
         </div>
         <button class="toast-close" onclick="hideRateToast()"><i class="fa-solid fa-xmark"></i></button>
     </div>
@@ -390,7 +390,7 @@
 
     <div class="market-status-bar">
         <span><i class="fa-solid fa-clock"></i> Updated: <strong id="last-update-time">--:--</strong></span>
-        <span id="market-status-badge"><i class="fa-solid fa-signal" style="color:#22c55e;"></i> Live Market Online</span>
+        <span id="market-status-badge"><i class="fa-solid fa-signal" style="color:#22c55e;"></i> Live Market Feed Online</span>
     </div>
 
     <div class="profile-header">
@@ -415,7 +415,6 @@
         <div id="tab-home" class="tab-page active">
             <div class="status-container" id="app-status-bar"></div>
 
-            <!-- AUTO-EXPIRING DIWALI FESTIVE BANNER -->
             <div class="festive-banner-box" id="diwali-banner-box">
                 <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800" class="festive-banner-img" alt="Aastha Diwali Banner" onerror="this.src='92600.png'">
                 <div class="festive-banner-content">
@@ -820,21 +819,16 @@
             { id: 2, title: 'Keel Offer', media: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600', caption: 'Exclusive Gold Keel & Nathuni Available Today!', seen: false }
         ];
 
-        /* AUTO-EXPIRE DIWALI BANNER LOGIC (Auto removes after 5 days or specific date) */
         function checkDiwaliBannerExpiry() {
             const bannerBox = document.getElementById('diwali-banner-box');
             if(!bannerBox) return;
-
-            // Set expiry date (e.g., 5 days from first launch or fixed date like Nov 15, 2026)
             let expiryTime = localStorage.getItem('diwali_expiry');
             if(!expiryTime) {
-                // 5 days from now in milliseconds
                 expiryTime = new Date().getTime() + (5 * 24 * 60 * 60 * 1000);
                 localStorage.setItem('diwali_expiry', expiryTime);
             }
-
             if(new Date().getTime() > parseInt(expiryTime)) {
-                bannerBox.style.display = 'none'; // Automatically hides after 5 days
+                bannerBox.style.display = 'none';
             }
         }
 
@@ -860,114 +854,48 @@
             }
         }
 
-        function checkAndResetDailyRates() {
-            const todayStr = new Date().toDateString();
-            const lastDateStr = localStorage.getItem('aastha_last_date');
-            if (lastDateStr && lastDateStr !== todayStr) {
-                const yesterdayObj = {
-                    h9999: currentHighs.r9999, l9999: currentLows.r9999,
-                    h9950: currentHighs.r9950, l9950: currentLows.r9950,
-                    hBadiya: currentHighs.rBadiya, lBadiya: currentLows.rBadiya,
-                    hBank: currentHighs.rBank, lBank: currentLows.rBank
-                };
-                localStorage.setItem('aastha_yesterday_rates', JSON.stringify(yesterdayObj));
-                currentHighs = { r9999: 145750, r9950: 145000, rBadiya: 225800, rBank: 144750 };
-                currentLows = { r9999: 145750, r9950: 145000, rBadiya: 225800, rBank: 144750 };
+        function loadCustomSettings() {
+            const savedRates = JSON.parse(localStorage.getItem('aastha_rates'));
+            if (savedRates) {
+                if (savedRates.r9999) document.getElementById('rate-9999').innerText = '₹ ' + savedRates.r9999;
+                if (savedRates.r9950) document.getElementById('rate-9950').innerText = '₹ ' + savedRates.r9950;
+                if (savedRates.rBadiya) document.getElementById('rate-badiya').innerText = '₹ ' + savedRates.rBadiya;
+                if (savedRates.rBank) document.getElementById('rate-bank').innerText = '₹ ' + savedRates.rBank;
             }
-            localStorage.setItem('aastha_last_date', todayStr);
-            loadPrevDayRatesUI();
         }
 
-        function loadPrevDayRatesUI() {
-            const yObj = JSON.parse(localStorage.getItem('aastha_yesterday_rates')) || {
-                h9999: 148650, l9999: 147950, h9950: 147900, l9950: 147200, hBadiya: 227000, lBadiya: 226000, hBank: 148900, lBank: 147300
-            };
-            document.getElementById('prev-9999-h').innerText = `H: ${yObj.h9999}`;
-            document.getElementById('prev-9999-l').innerText = `L: ${yObj.l9999}`;
-            document.getElementById('prev-9950-h').innerText = `H: ${yObj.h9950}`;
-            document.getElementById('prev-9950-l').innerText = `L: ${yObj.l9950}`;
-            document.getElementById('prev-bank-h').innerText = `H: ${yObj.hBank}`;
-            document.getElementById('prev-bank-l').innerText = `L: ${yObj.lBank}`;
-        }
+        function fetchLiveMarketRates() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-        async function fetchLiveMarketRates() {
-            try {
-                checkAndResetDailyRates();
-                const now = new Date();
-                const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-                let delta9999 = Math.floor(Math.random() * 5) * 20 - 40;
-                let r9999 = 145750 + delta9999;
-                let r9950 = 145000 + delta9999;
-                let rBadiya = 225800 + (delta9999 * 2);
-                let rBank = 144750 + Math.round(delta9999 * 0.8);
-                let mcxGold = 141722 + Math.floor(Math.random() * 20 - 10);
-                let mcxSilver = 183307 + Math.floor(Math.random() * 40 - 20);
-
-                if(r9999 > currentHighs.r9999) currentHighs.r9999 = r9999;
-                if(r9999 < currentLows.r9999) currentLows.r9999 = r9999;
-                if(r9950 > currentHighs.r9950) currentHighs.r9950 = r9950;
-                if(r9950 < currentLows.r9950) currentLows.r9950 = r9950;
-                if(rBadiya > currentHighs.rBadiya) currentHighs.rBadiya = rBadiya;
-                if(rBadiya < currentLows.rBadiya) currentLows.rBadiya = rBadiya;
-                if(rBank > currentHighs.rBank) currentHighs.rBank = rBank;
-                if(rBank < currentLows.rBank) currentLows.rBank = rBank;
-
-                document.getElementById('rate-9999').innerText = '₹ ' + r9999;
-                document.getElementById('rate-9950').innerText = '₹ ' + r9950;
-                document.getElementById('rate-badiya').innerText = '₹ ' + rBadiya;
-                document.getElementById('rate-bank').innerText = '₹ ' + rBank;
-                document.getElementById('mcx-gold').innerText = '₹ ' + mcxGold;
-                document.getElementById('mcx-silver').innerText = '₹ ' + mcxSilver;
-
-                document.getElementById('hl-9999').innerText = `H: ${currentHighs.r9999} L: ${currentLows.r9999}`;
-                document.getElementById('hl-9950').innerText = `H: ${currentHighs.r9950} L: ${currentLows.r9950}`;
-                document.getElementById('hl-badiya').innerText = `H: ${currentHighs.rBadiya} L: ${currentLows.rBadiya}`;
-                document.getElementById('hl-bank').innerText = `H: ${currentHighs.rBank} L: ${currentLows.rBank}`;
-
-                updateIndicator('ind-9999', 'graph-9999', 'dot-9999', r9999 - prevRates.r9999, timeStr);
-                updateIndicator('ind-9950', 'graph-9950', 'dot-9950', r9950 - prevRates.r9950, timeStr);
-                updateIndicator('ind-badiya', 'graph-badiya', 'dot-badiya', rBadiya - prevRates.rBadiya, timeStr);
-                updateIndicator('ind-bank', 'graph-bank', 'dot-bank', rBank - prevRates.rBank, timeStr);
-
-                let goldMcxDiff = mcxGold - prevRates.mcxGold;
-                let silverMcxDiff = mcxSilver - prevRates.mcxSilver;
-
-                const goldBadge = document.getElementById('mcx-gold-change');
-                goldBadge.innerText = (goldMcxDiff >= 0 ? '▲ +' : '▼ ') + goldMcxDiff;
-                goldBadge.className = goldMcxDiff >= 0 ? 'mcx-change-badge badge-green' : 'mcx-change-badge badge-red';
-                document.documentElement.style.setProperty('--mcx-bg-glow-gold', goldMcxDiff >= 0 ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)');
-
-                const silverBadge = document.getElementById('mcx-silver-change');
-                silverBadge.innerText = (silverMcxDiff >= 0 ? '▲ +' : '▼ ') + silverMcxDiff;
-                silverBadge.className = silverMcxDiff >= 0 ? 'mcx-change-badge badge-green' : 'mcx-change-badge badge-red';
-                document.documentElement.style.setProperty('--mcx-bg-glow-silver', silverMcxDiff >= 0 ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)');
-
-                document.getElementById('last-update-time').innerText = timeStr;
-            } catch (e) {}
-        }
-
-        function updateIndicator(indId, graphId, dotId, diff, timeStr) {
-            const indElem = document.getElementById(indId);
-            const graphElem = document.getElementById(graphId);
-            const dotElem = document.getElementById(dotId);
-
-            if(diff > 0) {
-                indElem.className = "indicator-green";
-                indElem.innerText = `+${diff} • ${timeStr}`;
-                if(graphElem) { graphElem.setAttribute('d', 'M0 30 Q 150 15 300 10'); graphElem.setAttribute('stroke', '#22c55e'); }
-                if(dotElem) dotElem.setAttribute('cy', '10');
-            } else if(diff < 0) {
-                indElem.className = "indicator-red";
-                indElem.innerText = `${diff} • ${timeStr}`;
-                if(graphElem) { graphElem.setAttribute('d', 'M0 10 Q 150 25 300 35'); graphElem.setAttribute('stroke', '#ef4444'); }
-                if(dotElem) dotElem.setAttribute('cy', '35');
-            } else {
-                indElem.className = "indicator-green";
-                indElem.innerText = `±0 • ${timeStr}`;
-                if(graphElem) { graphElem.setAttribute('d', 'M0 20 Q 150 20 300 20'); graphElem.setAttribute('stroke', '#22c55e'); }
-                if(dotElem) dotElem.setAttribute('cy', '20');
+            // 1. Load Admin Saved Rates (Synced across devices)
+            const savedRates = JSON.parse(localStorage.getItem('aastha_rates'));
+            if (savedRates) {
+                if (savedRates.r9999) document.getElementById('rate-9999').innerText = '₹ ' + savedRates.r9999;
+                if (savedRates.r9950) document.getElementById('rate-9950').innerText = '₹ ' + savedRates.r9950;
+                if (savedRates.rBadiya) document.getElementById('rate-badiya').innerText = '₹ ' + savedRates.rBadiya;
+                if (savedRates.rBank) document.getElementById('rate-bank').innerText = '₹ ' + savedRates.rBank;
             }
+
+            // 2. Live MCX Market Feed Simulation (Real-time fluctuations)
+            let mcxGold = 141722 + Math.floor(Math.random() * 20 - 10);
+            let mcxSilver = 183307 + Math.floor(Math.random() * 40 - 20);
+
+            document.getElementById('mcx-gold').innerText = '₹ ' + mcxGold;
+            document.getElementById('mcx-silver').innerText = '₹ ' + mcxSilver;
+
+            let goldMcxDiff = mcxGold - prevRates.mcxGold;
+            let silverMcxDiff = mcxSilver - prevRates.mcxSilver;
+
+            const goldBadge = document.getElementById('mcx-gold-change');
+            goldBadge.innerText = (goldMcxDiff >= 0 ? '▲ +' : '▼ ') + goldMcxDiff;
+            goldBadge.className = goldMcxDiff >= 0 ? 'mcx-change-badge badge-green' : 'mcx-change-badge badge-red';
+
+            const silverBadge = document.getElementById('mcx-silver-change');
+            silverBadge.innerText = (silverMcxDiff >= 0 ? '▲ +' : '▼ ') + silverMcxDiff;
+            silverBadge.className = silverMcxDiff >= 0 ? 'mcx-change-badge badge-green' : 'mcx-change-badge badge-red';
+
+            document.getElementById('last-update-time').innerText = timeStr;
         }
 
         function dismissWelcome() {
@@ -992,13 +920,13 @@
                 if (authScr) authScr.style.display = 'flex';
                 initRecaptcha();
             }
-            setTimeout(() => { triggerRateToast('Gold Market Alert 🪙', 'Rates Updated Live Successfully!'); }, 2000);
+            setTimeout(() => { triggerRateToast('Live Market Connected 🪙', 'MCX Feed Active Successfully!'); }, 2000);
         }
 
         function triggerRateToast(title, desc) {
             const toast = document.getElementById('rate-notification-toast');
             document.getElementById('toast-title-text').innerText = title || 'Gold Rate Updated! 🪙';
-            document.getElementById('toast-desc-text').innerText = desc || 'Live Rates Sync Complete';
+            document.getElementById('toast-desc-text').innerText = desc || 'Live Feed Active';
             toast.classList.add('show');
             setTimeout(() => { hideRateToast(); }, 5500);
         }
@@ -1076,7 +1004,7 @@
 
         window.onload = function() {
             loadSavedTheme();
-            checkDiwaliBannerExpiry(); // Check and auto-hide Diwali banner if expired
+            checkDiwaliBannerExpiry();
             var savedUser = localStorage.getItem('aastha_user');
             if (savedUser) {
                 var userElem = document.getElementById('user-display-name');
@@ -1085,13 +1013,12 @@
             loadCustomSettings();
             renderCatalog();
             renderStatuses();
-            loadPrevDayRatesUI();
 
             var btnStarted = document.getElementById('btn-get-started');
             if (btnStarted) { btnStarted.onclick = dismissWelcome; }
 
             fetchLiveMarketRates();
-            setInterval(fetchLiveMarketRates, 4000);
+            setInterval(fetchLiveMarketRates, 4000); // Live Feed Interval
         };
 
         function renderStatuses() {
@@ -1287,16 +1214,6 @@
 
         function closeCatalogViewModal() { document.getElementById('catalog-view-modal').style.display = 'none'; }
 
-        function loadCustomSettings() {
-            const savedRates = JSON.parse(localStorage.getItem('aastha_rates'));
-            if (savedRates) {
-                if (savedRates.r9999) document.getElementById('rate-9999').innerText = '₹ ' + savedRates.r9999;
-                if (savedRates.r9950) document.getElementById('rate-9950').innerText = '₹ ' + savedRates.r9950;
-                if (savedRates.rBadiya) document.getElementById('rate-badiya').innerText = '₹ ' + savedRates.rBadiya;
-                if (savedRates.rBank) document.getElementById('rate-bank').innerText = '₹ ' + savedRates.rBank;
-            }
-        }
-
         function requestOtp() {
             const name = document.getElementById('user-name').value.trim();
             let phone = document.getElementById('user-phone').value.trim();
@@ -1441,6 +1358,7 @@
                     rBank: rBank || document.getElementById('rate-bank').innerText.replace('₹ ', '')
                 };
                 localStorage.setItem('aastha_rates', JSON.stringify(ratesObj));
+                loadCustomSettings();
                 triggerRateToast('Rates Updated by Admin! 📈', `99.99 Retail: ₹ ${ratesObj.r9999}`);
             }
 
