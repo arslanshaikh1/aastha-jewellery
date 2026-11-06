@@ -1,786 +1,2144 @@
-
-<!D<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aastha Jewellery Makers</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Aastha Jewellery Makers | Gold & Silver Rates & Catalog</title>
+    
+    <!-- Google SEO & Meta Tags -->
+    <meta name="google-site-verification" content="z-Wbk1xmUQxxI_NbWY4fSF9pBzWEe1daqq7oOS7avn8" />
+    <meta name="description" content="Aastha Jewellery Makers - Most trusted gold, silver, keel & nathuni rates. Check today live gold rate, silver rate, and Shrimukh catalog.">
+    <meta name="keywords" content="Aastha Jewellery, Gold Rate Today, Aharaura Jewellery, Keel Nathuni, Shrimukh Jewellery">
+    <meta name="author" content="Aastha Jewellery Makers">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph (WhatsApp/Facebook Preview) -->
+    <meta property="og:title" content="Aastha Jewellery Makers">
+    <meta property="og:description" content="सबसे भरोसेमंद कील नथुनी का ब्रांड - लाइव सोने-चांदी के भाव देखें।">
+    <meta property="og:image" content="92600.png">
+    <meta property="og:type" content="website">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        :root {
+            --bg-dark: #070e1e;
+            --card-dark: #0d1b38;
+            --card-border: #182a52;
+            --accent-gold: #d4af37;
+            --green-text: #22c55e;
+            --red-text: #ef4444;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --mcx-bg-glow-gold: rgba(239, 68, 68, 0.15);
+            --mcx-bg-glow-silver: rgba(239, 68, 68, 0.15);
+        }
+
+        body.light-mode {
+            --bg-dark: #f0f4f8;
+            --card-dark: #ffffff;
+            --card-border: #dbe2ef;
+            --accent-gold: #b8860b;
+            --text-light: #0f172a;
+            --text-muted: #64748b;
+        }
+
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Poppins', sans-serif; 
+            -webkit-tap-highlight-color: transparent; 
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            background-color: var(--bg-dark); 
+            color: var(--text-light); 
+            overflow-x: hidden;
+            position: relative;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         body {
-            background-color: #060b19;
-            color: #ffffff;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
             min-height: 100vh;
-        }
-
-        .app-container {
             width: 100%;
-            height: 100vh;
-            background: linear-gradient(135deg, #0b132b 0%, #060b19 50%, #101c3f 100%);
-            background-size: 200% 200%;
-            animation: bgGlow 8s ease infinite;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-        }
-
-        @keyframes bgGlow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        @media(min-width: 1024px) {
-            .app-container {
-                max-width: 100%;
-                height: 100vh;
-                border-radius: 0;
-                border: none;
-            }
-        }
-
-        .screen {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(180deg, #101c3f 0%, #0b132b 50%, #060b19 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 20px;
-            z-index: 10;
-        }
-
-        .screen.hidden {
-            display: none;
-        }
-
-        .logo-img-large {
-            width: 130px;
-            height: 130px;
-            margin: 20px auto 10px auto;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #f39c12;
-            box-shadow: 0 0 25px rgba(243, 156, 18, 0.5);
-            display: block;
-            background: #0b132b;
-        }
-
-        .input-box {
-            background: #162238;
-            border: 1px solid #334155;
-            border-radius: 14px;
-            padding: 14px 16px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-            width: 100%;
-        }
-
-        .input-box input {
-            background: transparent;
-            border: none;
-            outline: none;
-            color: white;
-            font-size: 16px;
-            width: 100%;
-            margin-left: 10px;
-        }
-
-        .input-box input::placeholder {
-            color: #94a3b8;
-        }
-
-        .btn-gold {
-            background: linear-gradient(135deg, #f39c12 0%, #d35400 100%);
-            color: white;
-            border: none;
-            padding: 16px;
-            border-radius: 14px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            max-width: 500px;
             margin: 0 auto;
-            display: block;
-            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4);
-            text-align: center;
+            padding-bottom: 80px;
         }
 
-        /* Top Bar */
-        .dashboard-top-bar {
+        /* PUSH NOTIFICATION TOAST POPUP */
+        #rate-notification-toast {
+            position: fixed;
+            top: -120px;
+            left: 16px;
+            right: 16px;
+            max-width: 480px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #0d214a, #132a5a);
+            border: 1px solid var(--accent-gold);
+            border-radius: 16px;
             padding: 12px 16px;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-            background: rgba(11, 19, 43, 0.95);
-        }
-
-        .welcome-row {
+            z-index: 9999999;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7), 0 0 20px rgba(212, 175, 55, 0.3);
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 6px;
+            gap: 14px;
+            transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-
-        .main-scroll {
+        #rate-notification-toast.show {
+            top: 16px;
+        }
+        .toast-app-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-gold);
+            overflow: hidden;
+            background: #000;
+            flex-shrink: 0;
+        }
+        .toast-content {
             flex: 1;
-            overflow-y: auto;
-            padding: 14px;
-            scrollbar-width: none;
-            max-width: 900px;
-            margin: 0 auto;
-            width: 100%;
         }
-        .main-scroll::-webkit-scrollbar { display: none; }
-
-        /* Bada HD Promotional Banner */
-        .big-promo-banner {
-            background: linear-gradient(135deg, #1b2a4a 0%, #0d1527 100%);
-            border: 2px solid #f39c12;
-            border-radius: 16px;
-            padding: 14px;
-            margin-bottom: 14px;
-            text-align: center;
-            box-shadow: 0 6px 20px rgba(243, 156, 18, 0.3);
-        }
-
-        .big-promo-banner img {
-            width: 100%;
-            height: 160px;
-            border-radius: 12px;
-            object-fit: cover;
-            border: 1px solid #f39c12;
-            margin-bottom: 10px;
-        }
-
-        /* Admin Panel */
-        .admin-panel {
-            background: linear-gradient(135deg, #1f293d 0%, #111827 100%);
-            border: 1px dashed #f39c12;
-            border-radius: 16px;
-            padding: 14px;
-            margin-bottom: 14px;
-            text-align: center;
-            display: none; /* Hidden by default for customers */
-        }
-
-        .admin-panel input {
-            background: #0b132b;
-            border: 1px solid #334155;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 8px;
-            margin: 5px;
-            font-size: 13px;
-            width: 45%;
-            outline: none;
-        }
-
-        .admin-panel button {
-            background: #2ecc71;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 8px;
-        }
-
-        .admin-login-bar {
-            text-align: right;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: flex-end;
-            gap: 8px;
-        }
-
-        .admin-btn-trigger {
-            background: #1e293b;
-            color: #f39c12;
-            border: 1px solid #f39c12;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 11px;
-            cursor: pointer;
-        }
-
-        /* Exact Live Rate Card */
-        .rate-card-exact {
-            background: linear-gradient(135deg, #182442 0%, #101932 100%);
-            border: 1px solid #334155;
-            border-radius: 16px;
-            padding: 14px;
-            margin-bottom: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-        }
-
-        .rate-top {
+        .toast-header-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 2px;
         }
+        .toast-app-name {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .toast-time {
+            font-size: 9px;
+            color: var(--text-muted);
+        }
+        .toast-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+        .toast-desc {
+            font-size: 11px;
+            color: #cbd5e1;
+        }
+        .toast-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 16px;
+            cursor: pointer;
+            padding: 4px;
+        }
 
-        .rate-title {
-            font-size: 15px;
-            font-weight: bold;
-            color: #ffffff;
+        /* WELCOME / SPLASH SCREEN */
+        #welcome-screen {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            width: 100vw;
+            height: 100vh;
+            background: var(--bg-dark);
+            z-index: 999999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+            color: #fff;
+            transition: opacity 0.3s ease;
+        }
+        #welcome-screen.hidden {
+            display: none !important;
+            pointer-events: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+        }
+        .welcome-logo-container {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            border: 3px solid var(--accent-gold);
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            margin-bottom: 20px;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
+            background: #000;
+            overflow: hidden;
         }
-
-        .rate-title img {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
+        
+        .app-logo-img {
+            width: 100%;
+            height: 100%;
             object-fit: cover;
-            border: 1px solid #f39c12;
+            display: block;
         }
 
-        .rate-price {
-            font-size: 18px;
-            font-weight: bold;
-            color: #2ecc71;
-            transition: color 0.3s ease;
+        .welcome-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--accent-gold);
+            margin-bottom: 4px;
         }
-
-        .rate-sub {
-            font-size: 11px;
+        .welcome-sub-hindi {
+            font-size: 14px;
+            color: #cbd5e1;
+            margin-bottom: 16px;
+        }
+        .welcome-tagline {
+            font-size: 13px;
             color: #94a3b8;
             margin-bottom: 6px;
         }
-
-        .graph-line {
-            width: 100%;
-            height: 26px;
-            position: relative;
-            margin: 4px 0;
+        .welcome-trust {
+            font-size: 12px;
+            color: #38bdf8;
+            margin-bottom: 24px;
         }
 
-        .rate-footer {
+        .btn-gold {
+            background: linear-gradient(135deg, #f59e0b, #d4af37);
+            color: #000;
+            font-weight: 700;
+            font-size: 15px;
+            padding: 12px 30px;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            width: 100%;
+            max-width: 280px;
+            position: relative;
+            z-index: 1000000;
+        }
+        .btn-gold:active { transform: scale(0.96); }
+
+        /* AUTH SCREEN */
+        #auth-screen {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(7, 14, 30, 0.96);
+            backdrop-filter: blur(8px);
+            z-index: 9990;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        .auth-card {
+            background: var(--card-dark);
+            border: 1px solid var(--accent-gold);
+            border-radius: 20px;
+            padding: 24px;
+            width: 100%;
+            max-width: 360px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .auth-logo {
+            width: 70px; height: 70px;
+            margin: 0 auto 12px auto;
+            border-radius: 50%;
+            border: 2px solid var(--accent-gold);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+        }
+        .input-group {
+            position: relative;
+            margin-bottom: 14px;
+            text-align: left;
+        }
+        .input-group i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent-gold);
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px 12px 12px 40px;
+            border-radius: 10px;
+            border: 1px solid var(--card-border);
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            outline: none;
+            font-size: 13px;
+        }
+        .btn-auth {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(135deg, #f59e0b, #d4af37);
+            color: #000;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        /* HEADER APP BAR */
+        .top-app-bar {
+            background: var(--card-dark);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--card-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            width: 100%;
+        }
+        .top-app-bar h2 {
+            font-size: 17px;
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+        .top-app-logo {
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            border: 1px solid var(--accent-gold);
+            overflow: hidden;
+            background: #000;
+        }
+
+        /* STATUS BAR */
+        .market-status-bar {
+            background: rgba(245, 158, 11, 0.15);
+            border-bottom: 1px solid rgba(245, 158, 11, 0.3);
+            color: var(--accent-gold);
+            font-size: 11px;
+            padding: 6px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 11px;
-            color: #94a3b8;
-            border-top: 1px dashed rgba(255,255,255,0.1);
-            padding-top: 6px;
+            width: 100%;
         }
 
-        /* MCX Grid */
-        .mcx-container {
-            background: linear-gradient(135deg, #141f38 0%, #0b132b 100%);
-            border: 1px solid #334155;
-            border-radius: 16px;
-            padding: 14px;
-            margin: 14px 0;
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
-            gap: 10px;
+        /* PROFILE HEADER */
+        .profile-header {
+            padding: 14px 20px;
+            background: linear-gradient(180deg, var(--card-dark) 0%, var(--bg-dark) 100%);
+            width: 100%;
+        }
+        .user-info-row {
+            display: flex;
             align-items: center;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            justify-content: space-between;
+        }
+        .user-left { display: flex; align-items: center; gap: 12px; }
+        .user-avatar {
+            width: 46px; height: 46px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-gold);
+            overflow: hidden;
+            background: #000;
+        }
+        .user-text p { font-size: 11px; color: var(--text-muted); }
+        .user-text h3 { font-size: 15px; font-weight: 600; color: var(--text-light); }
+
+        .header-right-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .mcx-item-left { text-align: left; }
-        .mcx-item-right { text-align: right; }
+        .trust-banner {
+            margin-top: 10px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 11px;
+            color: var(--accent-gold);
+            text-align: center;
+        }
 
-        .moon-icon-box {
-            width: 45px;
-            height: 45px;
-            background: #1c2541;
-            border: 2px solid #f39c12;
+        /* FESTIVE BANNER CAROUSEL */
+        .festive-banner-box {
+            position: relative;
+            width: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 14px;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+            background: linear-gradient(135deg, #4a0000 0%, #1a0005 100%);
+        }
+        .festive-banner-img {
+            width: 100%;
+            height: auto;
+            max-height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+        .festive-banner-content {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            padding: 12px;
+            background: linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.1));
+            color: #fff;
+        }
+        .festive-tag {
+            font-size: 10px;
+            background: #ef4444;
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        .festive-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--accent-gold);
+        }
+
+        /* PROMO HIGHLIGHT CARD */
+        .promo-highlight-card {
+            background: linear-gradient(135deg, #0d214a, #132a5a);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 14px;
+            padding: 12px 16px;
+            margin-bottom: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .promo-title { font-size: 14px; font-weight: 700; color: #fff; }
+        .promo-subtitle { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+        .promo-btn {
+            color: #38bdf8;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* APP STATUS / STORIES SECTION */
+        .status-container {
+            display: flex;
+            gap: 12px;
+            padding: 4px 0 12px 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--card-border);
+        }
+        .status-container::-webkit-scrollbar { display: none; }
+        .status-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            min-width: 65px;
+        }
+        .status-ring {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            padding: 2px;
+            background: linear-gradient(45deg, var(--accent-gold), #f59e0b, #ef4444);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .status-ring.seen {
+            background: #475569;
+        }
+        .status-thumb {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--bg-dark);
+            background: #000;
+        }
+        .status-title {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 65px;
+        }
+
+        /* STATUS VIEWER MODAL */
+        #status-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            width: 100vw; height: 100vh;
+            background: #000;
+            z-index: 999999;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .status-progress-bar {
+            width: 100%;
+            height: 3px;
+            background: rgba(255,255,255,0.3);
+            position: absolute;
+            top: 10px;
+            left: 0;
+            z-index: 10;
+        }
+        .status-progress-fill {
+            height: 100%;
+            background: var(--accent-gold);
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+        .status-header-view {
+            position: absolute;
+            top: 20px;
+            left: 15px;
+            right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 10;
+            color: #fff;
+        }
+        .status-close-btn {
+            font-size: 20px;
+            color: #fff;
+            cursor: pointer;
+            background: rgba(0,0,0,0.4);
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
-            margin: 0 auto;
-            box-shadow: 0 0 10px rgba(243, 156, 18, 0.4);
+        }
+        .status-media-box {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .status-media-box img, .status-media-box video {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        .status-caption {
+            position: absolute;
+            bottom: 30px;
+            left: 20px;
+            right: 20px;
+            text-align: center;
+            background: rgba(0,0,0,0.6);
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            color: #fff;
+            backdrop-filter: blur(4px);
         }
 
-        /* Bottom Nav Bar */
+        /* MAIN CONTAINER */
+        .main-container { 
+            padding: 14px 20px; 
+            width: 100%; 
+            max-width: 1200px;
+            margin: 0 auto;
+            flex: 1; 
+        }
+
+        .tab-page { display: none; width: 100%; }
+        .tab-page.active { display: block; }
+
+        /* RATE CARDS */
+        .rate-card-item {
+            background: var(--card-dark);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            width: 100%;
+        }
+        .rate-card-item.highlight { border-color: rgba(212, 175, 55, 0.6); }
+        .card-top { display: flex; justify-content: space-between; align-items: center; }
+        .card-title-box { display: flex; align-items: center; gap: 10px; }
+        .card-logo {
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 1px solid var(--accent-gold);
+            background: #000;
+        }
+        .card-title-box h4 { font-size: 14px; font-weight: 600; color: var(--text-light); }
+        .card-price { font-size: 18px; font-weight: 700; color: var(--accent-gold); }
+        .card-sub-text { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+        .chart-svg { width: 100%; height: 32px; margin: 6px 0; }
+        .card-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            padding-top: 6px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        .indicator-red { color: var(--red-text); font-weight: 500; }
+        .indicator-green { color: var(--green-text); font-weight: 500; }
+        .hl-values { color: var(--text-muted); font-size: 10px; }
+
+        /* MCX SECTION WITH THEME TOGGLE BUTTON & DYNAMIC GLOW BACKGROUND */
+        .mcx-container-wrapper {
+            position: relative;
+            margin-bottom: 14px;
+            width: 100%;
+        }
+
+        .theme-toggle-center-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #0d1b38;
+            border: 2px solid var(--accent-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 20;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+            color: var(--accent-gold);
+            font-size: 18px;
+            transition: transform 0.2s ease, background-color 0.3s ease;
+        }
+        .theme-toggle-center-btn:active { transform: translate(-50%, -50%) scale(0.9); }
+
+        .mcx-row { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 12px; 
+            width: 100%; 
+        }
+        .mcx-card {
+            background: var(--card-dark);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 14px 12px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+        
+        .mcx-card.mcx-gold-card {
+            background: radial-gradient(circle at center, var(--mcx-bg-glow-gold) 0%, var(--card-dark) 70%);
+        }
+        .mcx-card.mcx-silver-card {
+            background: radial-gradient(circle at center, var(--mcx-bg-glow-silver) 0%, var(--card-dark) 70%);
+        }
+
+        .mcx-title-box { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; display: flex; align-items: center; justify-content: center; gap: 4px; }
+        .mcx-price { font-size: 16px; font-weight: 700; color: var(--text-light); }
+        .mcx-change-badge {
+            display: inline-block;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-top: 4px;
+            font-weight: 600;
+        }
+        .badge-red { background: rgba(239, 68, 68, 0.2); color: var(--red-text); border: 1px solid rgba(239, 68, 68, 0.4); }
+        .badge-green { background: rgba(34, 197, 94, 0.2); color: var(--green-text); border: 1px solid rgba(34, 197, 94, 0.4); }
+
+        .floating-action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; width: 100%; }
+        .btn-float-green {
+            background: #25d366; color: #fff; text-decoration: none; padding: 12px; border-radius: 12px;
+            text-align: center; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;
+        }
+        .btn-float-orange {
+            background: #f59e0b; color: #000; text-decoration: none; padding: 12px; border-radius: 12px;
+            text-align: center; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;
+        }
+
+        /* BOTTOM NAVIGATION */
         .bottom-nav {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            width: 100%;
+            background: var(--card-dark);
+            border-top: 1px solid var(--card-border);
             display: flex;
             justify-content: space-around;
-            background: #0b132b;
             padding: 10px 0;
-            border-top: 1px solid #1e293b;
+            z-index: 1000;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 10px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .nav-item i { font-size: 18px; margin-bottom: 3px; }
+        .nav-item.active { color: var(--accent-gold); }
+
+        /* CATALOG STYLING */
+        .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; width: 100%; }
+        .catalog-card {
+            background: var(--card-dark); border: 1px solid var(--card-border);
+            border-radius: 14px; overflow: hidden; text-align: center; padding-bottom: 12px;
+            cursor: pointer; transition: transform 0.2s ease, border-color 0.2s ease;
+            position: relative;
+        }
+        .catalog-card:active { transform: scale(0.97); border-color: var(--accent-gold); }
+        
+        .catalog-img-wrapper {
+            width: 100%;
+            height: 150px;
+            background: radial-gradient(circle, #2a3d66 0%, #080f1e 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            padding: 6px;
+        }
+        .catalog-img { 
+            max-width: 100%; 
+            max-height: 100%; 
+            object-fit: contain; 
+            filter: drop-shadow(0px 8px 12px rgba(0,0,0,0.7));
+            transition: transform 0.3s ease;
+        }
+        .catalog-card:hover .catalog-img { transform: scale(1.05); }
+
+        .catalog-title { font-size: 12px; font-weight: 600; margin-top: 8px; color: var(--text-light); padding: 0 6px; }
+        .catalog-meta { display: flex; justify-content: space-between; align-items: center; padding: 4px 10px 0 10px; font-size: 11px; }
+        .catalog-weight { color: var(--text-muted); font-size: 10px; }
+        .catalog-price { color: var(--accent-gold); font-weight: 700; font-size: 12px; }
+
+        /* PREVIOUS DAY TAB */
+        .light-theme-box {
+            background: var(--card-dark);
+            color: var(--text-light);
+            border-radius: 14px;
+            padding: 16px;
+            width: 100%;
+            border: 1px solid var(--card-border);
+        }
+        .light-theme-box .prev-title { color: var(--text-light); font-weight: 700; font-size: 18px; }
+        .light-theme-box .prev-sub { color: var(--text-muted); font-size: 12px; margin-bottom: 12px; }
+        .prev-notice {
+            background: #fef3c7; color: #92400e; padding: 8px 12px; border-radius: 8px;
+            font-size: 12px; margin-bottom: 14px; text-align: center; font-weight: 500;
+        }
+        .prev-card {
+            background: var(--bg-dark); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px;
+            margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .prev-card-left { display: flex; align-items: center; gap: 10px; }
+        .prev-icon-bg {
+            width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.05);
+            display: flex; align-items: center; justify-content: center; font-size: 16px;
+        }
+        .prev-details h4 { font-size: 13px; color: var(--text-light); }
+        .prev-details p { font-size: 10px; color: var(--text-muted); }
+        .prev-values { text-align: right; font-size: 12px; font-weight: 600; }
+
+        /* CONTACT DETAILS */
+        .contact-details-row { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+        .action-btns { display: flex; gap: 8px; }
+        .btn-icon {
+            width: 34px; height: 34px; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; color: #fff; text-decoration: none; font-size: 13px;
+        }
+        .btn-call { background: #0284c7; }
+        .btn-msg { background: #16a34a; }
+
+        /* EXTRA GRID */
+        .extra-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; width: 100%; }
+        .extra-card {
+            background: var(--card-dark); border: 1px solid var(--card-border);
+            border-radius: 12px; padding: 18px; text-align: center; cursor: pointer;
+        }
+        .extra-card i { font-size: 24px; color: var(--accent-gold); margin-bottom: 8px; }
+        .extra-card h4 { font-size: 12px; color: var(--text-light); }
+
+        /* MODALS */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); z-index: 10000;
+            align-items: center; justify-content: center; padding: 16px; overflow-y: auto;
+        }
+        .modal-content {
+            background: var(--card-dark); border: 1px solid var(--accent-gold);
+            border-radius: 16px; padding: 20px; width: 100%; max-width: 380px; text-align: center;
+            max-height: 90vh; overflow-y: auto;
+        }
+        .form-label { font-size: 11px; color: var(--accent-gold); text-align: left; display: block; margin: 8px 0 3px 2px; }
+        .admin-input {
+            width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--card-border);
+            background: rgba(255,255,255,0.05); color: #fff; outline: none; font-size: 13px;
         }
 
-        .nav-link {
-            text-align: center;
-            color: #94a3b8;
-            font-size: 11px;
-            cursor: pointer;
+        #catalog-view-modal .modal-content { text-align: left; }
+        .catalog-view-bg-box {
+            width: 100%;
+            height: 240px;
+            background: radial-gradient(circle, #2a3d66 0%, #080f1e 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            border: 1px solid var(--card-border);
+            padding: 10px;
         }
-        .nav-link.active { color: #f39c12; }
+        #catalog-item-img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.8));
+        }
+        .view-detail-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px; color: #cbd5e1; }
+        .view-detail-val { font-weight: 600; color: var(--accent-gold); }
+
+        .admin-delete-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--card-border);
+            padding: 8px 10px;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            font-size: 12px;
+        }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-
-    <!-- SCREEN 1: Welcome Splash Screen -->
-    <div id="splashScreen" class="screen">
-        <div style="text-align: center; margin-top: 30px;">
-            <img src="92600.png" alt="Aastha Jewellery Logo" class="logo-img-large">
-            <h1 style="font-size: 24px; color: #ffffff; margin-bottom: 3px;">Aastha Jewellery Makers</h1>
-            <p style="font-size: 13px; color: #f39c12;">आस्था ज्वेलरी मेकर</p>
+    <!-- PUSH NOTIFICATION TOAST -->
+    <div id="rate-notification-toast">
+        <div class="toast-app-icon">
+            <img src="92600.png" alt="Aastha Logo" class="app-logo-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=100'">
         </div>
-
-        <div style="text-align: center; margin: 10px 0;">
-            <p style="font-size: 15px; color: #cbd5e1; margin-bottom: 8px;">Aastha Jewellery Makers mein aapka swagat hai ✨</p>
-            <p style="font-size: 11px; color: #38bdf8; margin-bottom: 10px;">✔ Most trusted keel & nathuni brand</p>
+        <div class="toast-content">
+            <div class="toast-header-row">
+                <span class="toast-app-name">Aastha Jewellery</span>
+                <span class="toast-time">Just now</span>
+            </div>
+            <div class="toast-title" id="toast-title-text">Gold Rate Updated! 🪙</div>
+            <div class="toast-desc" id="toast-desc-text">Live Auto Update Active</div>
         </div>
-
-        <button class="btn-gold" onclick="goToSignIn()">Get Started</button>
+        <button class="toast-close" onclick="hideRateToast()"><i class="fa-solid fa-xmark"></i></button>
     </div>
 
-    <!-- SCREEN 2: Sign In Screen -->
-    <div id="signInScreen" class="screen hidden">
-        <div style="max-width: 500px; margin: 40px auto; width: 100%;">
-            <div style="font-size: 26px; font-weight: bold; color: #ffffff; margin-bottom: 20px; text-align: center;">Sign in</div>
-            
-            <img src="92600.png" alt="Logo" style="width: 90px; height: 90px; border-radius: 50%; border: 2px solid #f39c12; margin: 0 auto 20px auto; display: block; object-fit: cover;">
-
-            <div class="input-box">
-                <span>👤</span>
-                <input type="text" id="userNameInput" placeholder="Your Name (e.g. Shekh Arslan)">
-            </div>
-
-            <div class="input-box">
-                <span>📞</span>
-                <input type="tel" id="userPhoneInput" placeholder="Mobile Number">
-            </div>
+    <!-- WELCOME SCREEN -->
+    <div id="welcome-screen">
+        <div class="welcome-logo-container">
+            <img src="92600.png" alt="Aastha Jewellery Logo" class="app-logo-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=150'">
         </div>
-
-        <button class="btn-gold" onclick="handleLogin()">Send OTP / Login</button>
-    </div>
-
-    <!-- SCREEN 3: Main Dashboard -->
-    <div id="dashboardScreen" class="screen hidden" style="padding: 0; justify-content: space-between;">
+        <h1 class="welcome-title">Aastha Jewellery Makers</h1>
+        <p class="welcome-sub-hindi">आस्था ज्वेलरी मेकर</p>
         
-        <!-- Top Bar -->
-        <div class="dashboard-top-bar">
-            <div class="welcome-row">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <img src="92600.png" alt="Logo" style="width: 38px; height: 38px; border-radius: 50%; border: 1px solid #f39c12; object-fit: cover;">
-                    <div>
-                        <span style="font-size: 10px; color: #94a3b8;">Welcome 👋</span>
-                        <div id="displayName" style="font-size: 15px; font-weight: bold; color: #f39c12;">Shekh Arslan</div>
-                    </div>
-                </div>
-                <div style="display: flex; gap: 8px; align-items: center;">
-                    <img src="92600.png" style="width: 30px; height: 30px; border-radius: 50%; border: 1px solid #f39c12;" alt="18K">
-                    <div style="width: 32px; height: 32px; background: #1c2541; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px;">🔔</div>
-                </div>
+        <p class="welcome-tagline">Aastha Jewellery Makers mein aapka swagat hai ✨</p>
+        <p class="welcome-trust">✔ Most trusted keel & nathuni brand</p>
+
+        <button class="btn-gold" id="btn-get-started" type="button" onclick="dismissWelcome()">Get Started</button>
+    </div>
+
+    <div id="auth-screen">
+        <div class="auth-card">
+            <div class="auth-logo">
+                <img src="92600.png" alt="Logo" class="app-logo-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=100'">
             </div>
-            
-            <!-- Scrolling Hindi Marquee Text -->
-            <div style="overflow: hidden; white-space: nowrap; margin-top: 4px;">
-                <marquee scrollamount="4" style="font-size: 11px; color: #38bdf8;">
-                    ⭐ सबसे भरोसेमंद कील नथुनी का ब्रांड ✨, ऐप को आज ही अपडेट करें! 
-                </marquee>
+            <h3 style="margin-bottom: 4px; color:var(--accent-gold); font-size:17px;">Aastha Jewellery</h3>
+            <p style="font-size: 12px; color: #cbd5e1; margin-bottom: 16px;">Sign in with Mobile SMS OTP</p>
+
+            <div id="step-phone">
+                <div class="input-group">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" id="user-name" placeholder="Full Name" required>
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-phone"></i>
+                    <input type="tel" id="user-phone" placeholder="Mobile No. (e.g. 8115331564)" required>
+                </div>
+                
+                <div id="recaptcha-container" style="margin-bottom: 10px; display: flex; justify-content: center; transform: scale(0.85); transform-origin: 0 0;"></div>
+                
+                <button type="button" class="btn-auth" id="btn-send-otp" onclick="requestOtp()">Send SMS OTP</button>
+            </div>
+
+            <div id="step-otp" style="display: none;">
+                <p id="otp-hint-text" style="font-size: 12px; color: #38bdf8; margin-bottom: 12px;">Enter 6-digit OTP sent to your Mobile Phone</p>
+                <div class="input-group">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="text" id="otp-input" placeholder="Enter 6-digit OTP" required>
+                </div>
+                <button type="button" class="btn-auth" id="btn-verify-otp" onclick="verifyOtp()">Verify & Login</button>
             </div>
         </div>
+    </div>
 
-        <!-- Scrollable Rate Cards -->
-        <div class="main-scroll">
-            
-            <!-- Admin Login & Change PIN Bar -->
-            <div class="admin-login-bar">
-                <button class="admin-btn-trigger" id="loginBtn" onclick="verifyAdminAccess()">🔐 Admin Login</button>
-                <button class="admin-btn-trigger" id="changePinBtn" style="display:none; background:#d35400; border-color:#d35400;" onclick="changeAdminPin()">🔑 Change PIN</button>
-            </div>
+    <div class="top-app-bar">
+        <h2>Aastha Jewellery</h2>
+        <div class="top-app-logo">
+            <img src="92600.png" alt="Logo" class="app-logo-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=100'">
+        </div>
+    </div>
 
-            <!-- SECURE ADMIN ADD ITEM PANEL -->
-            <div id="secureAdminPanel" class="admin-panel">
-                <div style="font-size: 13px; color: #f39c12; font-weight: bold; margin-bottom: 6px;">⚙️ Admin Panel (Protected)</div>
-                <input type="text" id="newItemName" placeholder="Item Name (e.g. Chain / Payal)">
-                <input type="number" id="newItemRate" placeholder="Rate in ₹">
-                <input type="text" id="adminWaNumber" placeholder="Your WhatsApp No (e.g. 918887726720)">
-                <br>
-                <button onclick="addNewJewelleryItem()">➕ Add New Item with WhatsApp</button>
-            </div>
+    <div class="market-status-bar">
+        <span><i class="fa-solid fa-clock"></i> Updated: <strong id="last-update-time">--:--</strong></span>
+        <span id="market-status-badge"><i class="fa-solid fa-signal" style="color:#22c55e;"></i> Live Market Online</span>
+    </div>
 
-            <!-- Bada HD Promotional Banner -->
-            <div class="big-promo-banner">
-                <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600" alt="Special Jewellery Banner">
-                <div style="font-size: 15px; font-weight: bold; color: #f39c12; margin-bottom: 4px;">1.5 ग्राम ⚖️ में चैन और पेण्डेन्ट</div>
-                <div style="font-size: 12px; color: #cbd5e1; margin-bottom: 8px;">दिवाली स्पेशल ✨ शुद्धता की गारंटी ✅</div>
-                <button onclick="window.open('https://wa.me/918887726720?text=Hello%20Aastha%20Jewellery%20Makers,%20mujhe%20is%20banner%20wale%20item%20ki%20jaankari%20chahiye', '_blank')" style="background: #25d366; color: #ffffff; border: none; padding: 6px 16px; border-radius: 12px; font-size: 12px; font-weight: bold; cursor: pointer;">💬 WhatsApp Inquiry</button>
-            </div>
-
-            <!-- DYNAMIC ITEMS CONTAINER -->
-            <div id="dynamicItemsContainer"></div>
-
-            <!-- 1. 99.99 Retail -->
-            <div class="rate-card-exact">
-                <div class="rate-top">
-                    <span class="rate-title"><img src="92600.png" alt="logo"> 99.99 Retail</span>
-                    <span id="price9999" class="rate-price">₹ 149400 <span style="font-size: 11px;">▲</span></span>
+    <div class="profile-header">
+        <div class="user-info-row">
+            <div class="user-left">
+                <div class="user-avatar">
+                    <img src="92600.png" alt="Logo" class="app-logo-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=100'">
                 </div>
-                <div class="rate-sub">Cash Denial</div>
-                <svg class="graph-line" viewBox="0 0 300 40">
-                    <path d="M 0 30 Q 100 25, 180 32 T 290 20" fill="none" stroke="#2ecc71" stroke-width="2"/>
-                    <circle cx="290" cy="20" r="4" fill="#f39c12"/>
-                </svg>
-                <div class="rate-footer">
-                    <span style="color: #e74c3c;">-150 • <span id="timeText1">06:25 PM</span></span>
-                    <span>H: 149850 &nbsp; L: 149400</span>
+                <div class="user-text">
+                    <p>Welcome 👋</p>
+                    <h3 id="user-display-name">User</h3>
                 </div>
             </div>
+            <div class="header-right-status" id="header-status-ring-box"></div>
+        </div>
+        <div class="trust-banner">
+            ★ सबसे भरोसेमंद कील नथुनी का ब्रांड ✨, ऐप को आज ही अपडेट करें!
+        </div>
+    </div>
 
-            <!-- 2. 99.50 Retail -->
-            <div class="rate-card-exact">
-                <div class="rate-top">
-                    <span class="rate-title"><img src="92600.png" alt="logo"> 99.50 Retail</span>
-                    <span id="price9950" class="rate-price">₹ 148650 <span style="font-size: 11px;">▲</span></span>
-                </div>
-                <div class="rate-sub">Cash Denial</div>
-                <svg class="graph-line" viewBox="0 0 300 40">
-                    <path d="M 0 32 Q 120 28, 200 35 T 290 22" fill="none" stroke="#2ecc71" stroke-width="2"/>
-                    <circle cx="290" cy="22" r="4" fill="#f39c12"/>
-                </svg>
-                <div class="rate-footer">
-                    <span style="color: #e74c3c;">-150 • <span id="timeText2">06:25 PM</span></span>
-                    <span>H: 149100 &nbsp; L: 148650</span>
+    <div class="main-container">
+
+        <!-- TAB 1: HOME -->
+        <div id="tab-home" class="tab-page active">
+            <div class="status-container" id="app-status-bar"></div>
+
+            <div class="festive-banner-box">
+                <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800" class="festive-banner-img" alt="Aastha Navratri Banner" onerror="this.src='92600.png'">
+                <div class="festive-banner-content">
+                    <span class="festive-tag">✨ आस्था पर्व ऑफर</span>
+                    <div class="festive-title">आस्था नवरात्रि की शुभकामनाएं 🙏</div>
+                    <p style="font-size:11px; color:#f1f5f9; margin-top:2px;">माँ दुर्गा आपके जीवन में सुख, समृद्धि और खुशियां लाएं!</p>
                 </div>
             </div>
 
-            <!-- 3. Batiya APPROX -->
-            <div class="rate-card-exact" style="border: 2px solid #f39c12;">
-                <div class="rate-top">
-                    <span class="rate-title"><img src="92600.png" alt="logo"> बड़िया APPROX</span>
-                    <span id="priceBatiya" class="rate-price">₹ 227000 <span style="font-size: 11px;">▲</span></span>
-                </div>
-                <div class="rate-sub">बड़िया हाज़िर भाव में फरक हो सकता है</div>
-                <svg class="graph-line" viewBox="0 0 300 40">
-                    <path d="M 0 35 Q 110 20, 210 25 T 290 15" fill="none" stroke="#2ecc71" stroke-width="2"/>
-                    <circle cx="290" cy="15" r="4" fill="#f39c12"/>
-                </svg>
-                <div class="rate-footer">
-                    <span style="color: #2ecc71;">+1000 • <span id="timeText3">06:25 PM</span></span>
-                    <span>H: 227000 &nbsp; L: 226000</span>
-                </div>
-            </div>
-
-            <!-- 4. BANK / GPAY -->
-            <div class="rate-card-exact">
-                <div class="rate-top">
-                    <span class="rate-title"><img src="92600.png" alt="logo"> BANK / GPAY</span>
-                    <span id="priceBank" class="rate-price">₹ 153100 <span style="font-size: 11px;">▲</span></span>
-                </div>
-                <div class="rate-sub">99.50 Inc. GST</div>
-                <svg class="graph-line" viewBox="0 0 300 40">
-                    <path d="M 0 25 Q 90 18, 190 30 T 290 25" fill="none" stroke="#2ecc71" stroke-width="2"/>
-                    <circle cx="290" cy="25" r="4" fill="#f39c12"/>
-                </svg>
-                <div class="rate-footer">
-                    <span style="color: #e74c3c;">-400 • <span id="timeText4">06:25 PM</span></span>
-                    <span>H: 153750 &nbsp; L: 153100</span>
-                </div>
-            </div>
-
-            <!-- MCX Grid -->
-            <div class="mcx-container">
-                <div class="mcx-item-left">
-                    <div style="font-size: 10px; color: #94a3b8;">🥇 GOLD MCX</div>
-                    <div id="goldMcxPrice" style="font-size: 14px; font-weight: bold; color: #f39c12; margin: 2px 0;">₹ 151565</div>
-                    <div style="font-size: 9px; color: #2ecc71; background: rgba(46,204,113,0.15); padding: 2px 5px; border-radius: 4px; display: inline-block;">▲ +1964</div>
-                </div>
+            <div class="promo-highlight-card">
                 <div>
-                    <div class="moon-icon-box">🌙</div>
+                    <div class="promo-title">दबंग स्टाइल वाली जेंट्स बाली 💪</div>
+                    <div class="promo-subtitle">दबदबा तो इसी से बनेगा 🗿</div>
                 </div>
-                <div class="mcx-item-right">
-                    <div style="font-size: 10px; color: #94a3b8;">🥈 SILVER MCX</div>
-                    <div id="silverMcxPrice" style="font-size: 14px; font-weight: bold; color: #f39c12; margin: 2px 0;">₹ 225709</div>
-                    <div style="font-size: 9px; color: #2ecc71; background: rgba(46,204,113,0.15); padding: 2px 5px; border-radius: 4px; display: inline-block;">▲ +4517</div>
+                <a href="#" onclick="switchTab('shrimukh', document.querySelectorAll('.nav-item')[2]); return false;" class="promo-btn">View More <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+            
+            <div class="rate-card-item">
+                <div class="card-top">
+                    <div class="card-title-box">
+                        <div class="card-logo">
+                            <img src="92600.png" alt="Logo" class="app-logo-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=50'">
+                        </div>
+                        <h4>99.99 Retail</h4>
+                    </div>
+                    <div class="card-price" id="rate-9999">₹ 149150</div>
+                </div>
+                <div class="card-sub-text">Cash Denial</div>
+                
+                <svg class="chart-svg" viewBox="0 0 300 40">
+                    <path id="graph-9999" d="M0 25 Q 150 10 300 20" fill="none" stroke="#22c55e" stroke-width="2"/>
+                    <circle id="dot-9999" cx="300" cy="20" r="4" fill="#f59e0b"/>
+                </svg>
+
+                <div class="card-bottom">
+                    <span class="indicator-green" id="ind-9999">+300 • 11:38 AM</span>
+                    <span class="hl-values" id="hl-9999">H: 149150 L: 148850</span>
                 </div>
             </div>
 
-            <!-- General WhatsApp & Share Buttons -->
-            <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 10px;">
-                <button onclick="window.open('https://wa.me/918887726720?text=Hello%20Aastha%20Jewellery%20Makers,%20mujhe%20live%20rates%20ki%20jaankari%20chahiye', '_blank')" style="background: #25d366; border: none; color: #ffffff; padding: 10px 20px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(37,211,102,0.4);">💬 WhatsApp Chat</button>
-                <button onclick="alert('Share link generated!')" style="background: linear-gradient(135deg, #f39c12 0%, #d35400 100%); border: none; color: #ffffff; padding: 10px 20px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(243,156,18,0.3);">📤 Share</button>
+            <div class="rate-card-item">
+                <div class="card-top">
+                    <div class="card-title-box">
+                        <div class="card-logo">
+                            <img src="92600.png" alt="Logo" class="app-logo-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=50'">
+                        </div>
+                        <h4>99.50 Retail</h4>
+                    </div>
+                    <div class="card-price" id="rate-9950">₹ 148400</div>
+                </div>
+                <div class="card-sub-text">Cash Denial</div>
+                
+                <svg class="chart-svg" viewBox="0 0 300 40">
+                    <path id="graph-9950" d="M0 25 Q 150 10 300 20" fill="none" stroke="#22c55e" stroke-width="2"/>
+                    <circle id="dot-9950" cx="300" cy="20" r="4" fill="#f59e0b"/>
+                </svg>
+
+                <div class="card-bottom">
+                    <span class="indicator-green" id="ind-9950">+300 • 11:38 AM</span>
+                    <span class="hl-values" id="hl-9950">H: 148400 L: 148100</span>
+                </div>
             </div>
 
-            <p style="font-size: 8px; color: #64748b; text-align: center; line-height: 1.3; padding: 0 10px; margin-bottom: 10px;">
-                *Above displayed data is for information purpose only and hence can't be used for legal purposes or doing any sort of transaction.
-            </p>
+            <div class="rate-card-item highlight">
+                <div class="card-top">
+                    <div class="card-title-box">
+                        <div class="card-logo">
+                            <img src="92600.png" alt="Logo" class="app-logo-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=50'">
+                        </div>
+                        <h4>बटिया APPROX</h4>
+                    </div>
+                    <div class="card-price" id="rate-badiya">₹ 226500</div>
+                </div>
+                <div class="card-sub-text">बटिया हाज़िर भाव में फर्क हो सकता है</div>
+                
+                <svg class="chart-svg" viewBox="0 0 300 40">
+                    <path id="graph-badiya" d="M0 20 Q 150 20 300 20" fill="none" stroke="#22c55e" stroke-width="2"/>
+                    <circle id="dot-badiya" cx="300" cy="20" r="4" fill="#f59e0b"/>
+                </svg>
 
+                <div class="card-bottom">
+                    <span class="indicator-green" id="ind-badiya">±0 • 11:42 AM</span>
+                    <span class="hl-values" id="hl-badiya">H: 226500 L: 226500</span>
+                </div>
+            </div>
+
+            <div class="rate-card-item">
+                <div class="card-top">
+                    <div class="card-title-box">
+                        <div class="card-logo">
+                            <img src="92600.png" alt="Logo" class="app-logo-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=50'">
+                        </div>
+                        <h4>BANK/GPAY</h4>
+                    </div>
+                    <div class="card-price" id="rate-bank">₹ 151850</div>
+                </div>
+                <div class="card-sub-text">99.50 Inc. GST</div>
+                
+                <svg class="chart-svg" viewBox="0 0 300 40">
+                    <path id="graph-bank" d="M0 10 Q 150 30 300 35" fill="none" stroke="#ef4444" stroke-width="2"/>
+                    <circle id="dot-bank" cx="300" cy="35" r="4" fill="#f59e0b"/>
+                </svg>
+
+                <div class="card-bottom">
+                    <span class="indicator-red" id="ind-bank">-50 • 11:33 AM</span>
+                    <span class="hl-values" id="hl-bank">H: 151900 L: 151850</span>
+                </div>
+            </div>
+
+            <!-- MCX CONTAINER WITH THEME TOGGLE (SUN / MOON ICON) & GLOW EFFECTS -->
+            <div class="mcx-container-wrapper">
+                <div class="theme-toggle-center-btn" id="theme-btn" onclick="toggleAppTheme()">
+                    <i class="fa-solid fa-moon" id="theme-icon"></i>
+                </div>
+                
+                <div class="mcx-row">
+                    <div class="mcx-card mcx-gold-card" id="mcx-gold-box">
+                        <div class="mcx-title-box"><span class="mcx-icon">🪙</span> <span>GOLD MCX</span></div>
+                        <div class="mcx-price" id="mcx-gold">₹ 148265</div>
+                        <div class="mcx-change-badge badge-red" id="mcx-gold-change">▼ -1193</div>
+                    </div>
+                    <div class="mcx-card mcx-silver-card" id="mcx-silver-box">
+                        <div class="mcx-title-box"><span class="mcx-icon">🥈</span> <span>SILVER MCX</span></div>
+                        <div class="mcx-price" id="mcx-silver">₹ 218716</div>
+                        <div class="mcx-change-badge badge-red" id="mcx-silver-change">▼ -4027</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="floating-action-row">
+                <a id="whatsapp-btn-link" href="#" onclick="openWhatsAppChat(); return false;" class="btn-float-green"><i class="fa-brands fa-whatsapp"></i> WhatsApp Chat</a>
+                <a href="#" class="btn-float-orange" onclick="navigator.share ? navigator.share({title:'Aastha Jewellery', url:window.location.href}) : copyShareLink()"><i class="fa-solid fa-box-archive"></i> Share</a>
+            </div>
         </div>
 
-        <!-- Bottom Navigation Bar -->
-        <div class="bottom-nav">
-            <div class="nav-link active">
-                <div style="font-size: 15px;">🏠</div>
-                Home
+        <!-- TAB 2: PREV DAY -->
+        <div id="tab-prev" class="tab-page light-theme-box">
+            <h2 class="prev-title">Previous Day Rates</h2>
+            <p class="prev-sub">Yesterday's closing rates for reference</p>
+            <div class="prev-notice">सिर्फ और सिर्फ आपके अनुमान के लिए</div>
+
+            <div class="prev-card">
+                <div class="prev-card-left">
+                    <div class="prev-icon-bg">🥇</div>
+                    <div class="prev-details">
+                        <h4>99.99 Retail</h4>
+                        <p>Yesterday</p>
+                    </div>
+                </div>
+                <div class="prev-values">
+                    <div style="color:#22c55e;" id="prev-9999-h">H: 149850</div>
+                    <div style="color:#ef4444;" id="prev-9999-l">L: 149400</div>
+                </div>
             </div>
-            <div class="nav-link" onclick="alert('Previous Day Rates opened')">
-                <div style="font-size: 15px;">⏱️</div>
-                Prev Day
+
+            <div class="prev-card">
+                <div class="prev-card-left">
+                    <div class="prev-icon-bg">🪙</div>
+                    <div class="prev-details">
+                        <h4>99.50 Retail</h4>
+                        <p>Yesterday</p>
+                    </div>
+                </div>
+                <div class="prev-values">
+                    <div style="color:#22c55e;" id="prev-9950-h">H: 149100</div>
+                    <div style="color:#ef4444;" id="prev-9950-l">L: 148650</div>
+                </div>
             </div>
-            <div class="nav-link" onclick="alert('Shrimukh section opened')">
-                <div style="font-size: 15px;">🌙</div>
-                Shrimukh
+
+            <div class="prev-card">
+                <div class="prev-card-left">
+                    <div class="prev-icon-bg">🥈</div>
+                    <div class="prev-details">
+                        <h4>बटिया APPROX</h4>
+                        <p>Yesterday</p>
+                    </div>
+                </div>
+                <div class="prev-values">
+                    <div style="color:#22c55e;" id="prev-badiya-h">H: 227000</div>
+                    <div style="color:#ef4444;" id="prev-badiya-l">L: 226000</div>
+                </div>
             </div>
-            <div class="nav-link" onclick="alert('Branch Details:\n1. Aharaura (Dinesh Kumar - 8887726720)\n2. Sikarganj (Ramesh Kumar - 9621106661)\n3. Uchahra Fauzi (Mukesh Kumar - 8090247751)')">
-                <div style="font-size: 15px;">🎧</div>
-                Details
+
+            <div class="prev-card">
+                <div class="prev-card-left">
+                    <div class="prev-icon-bg">📲</div>
+                    <div class="prev-details">
+                        <h4>BANK/GPAY</h4>
+                        <p>Yesterday</p>
+                    </div>
+                </div>
+                <div class="prev-values">
+                    <div style="color:#22c55e;" id="prev-bank-h">H: 153750</div>
+                    <div style="color:#ef4444;" id="prev-bank-l">L: 153100</div>
+                </div>
             </div>
-            <div class="nav-link" onclick="alert('Extra options opened')">
-                <div style="font-size: 15px;">🎛️</div>
-                Extra
+        </div>
+
+        <!-- TAB 3: SHRIMUKH CATALOG -->
+        <div id="tab-shrimukh" class="tab-page">
+            <div style="background: var(--card-dark); border: 1px solid var(--accent-gold); padding:16px; border-radius:14px; text-align:center; margin-bottom:14px;">
+                <i class="fa-solid fa-crown" style="color:var(--accent-gold); font-size:24px;"></i>
+                <h3 style="letter-spacing:1px; margin-top:4px; color:var(--text-light); font-size:15px;">SHRIMUKH ELEGANCE</h3>
+                <p style="font-size:11px; color:var(--accent-gold);">Exclusive Keel & Nathuni Catalog</p>
+            </div>
+            <div class="catalog-grid" id="catalog-container"></div>
+        </div>
+
+        <!-- TAB 4: DETAILS -->
+        <div id="tab-details" class="tab-page">
+            <h3 style="margin-bottom:14px; color:var(--accent-gold); font-size:16px;">Shop Locations & Details</h3>
+            
+            <div class="rate-card-item">
+                <h4 style="color:var(--accent-gold); margin-bottom:4px; font-size:14px;">1. Aharaura - Aastha Jewellery</h4>
+                <p style="font-size:11px; color:#94a3b8; margin-bottom:10px;"><i class="fa-solid fa-location-dot"></i> Aharaura Branch, Mirzapur</p>
+                <div class="contact-details-row">
+                    <div>
+                        <p style="font-weight:600; font-size:13px; color:var(--text-light);">Dinesh Kumar</p>
+                        <p style="font-size:11px; color:#94a3b8;">8887726720</p>
+                    </div>
+                    <div class="action-btns">
+                        <a href="tel:8887726720" class="btn-icon btn-call"><i class="fa-solid fa-phone"></i></a>
+                        <a href="#" onclick="openBranchWhatsApp('8887726720'); return false;" class="btn-icon btn-msg"><i class="fa-solid fa-comment"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rate-card-item">
+                <h4 style="color:var(--accent-gold); margin-bottom:4px; font-size:14px;">2. Sikarganj - Aastha Jewellery</h4>
+                <p style="font-size:11px; color:#94a3b8; margin-bottom:10px;"><i class="fa-solid fa-location-dot"></i> Sikarganj Branch</p>
+                <div class="contact-details-row">
+                    <div>
+                        <p style="font-weight:600; font-size:13px; color:var(--text-light);">Ramesh Kumar</p>
+                        <p style="font-size:11px; color:#94a3b8;">9621106661</p>
+                    </div>
+                    <div class="action-btns">
+                        <a href="tel:9621106661" class="btn-icon btn-call"><i class="fa-solid fa-phone"></i></a>
+                        <a href="#" onclick="openBranchWhatsApp('9621106661'); return false;" class="btn-icon btn-msg"><i class="fa-solid fa-comment"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rate-card-item">
+                <h4 style="color:var(--accent-gold); margin-bottom:4px; font-size:14px;">3. Uchahra Fauzi - Aastha Jewellery</h4>
+                <p style="font-size:11px; color:#94a3b8; margin-bottom:10px;"><i class="fa-solid fa-location-dot"></i> Uchahra Fauzi Branch</p>
+                <div class="contact-details-row">
+                    <div>
+                        <p style="font-weight:600; font-size:13px; color:var(--text-light);">Mukesh Kumar</p>
+                        <p style="font-size:11px; color:#94a3b8;">8090247751</p>
+                    </div>
+                    <div class="action-btns">
+                        <a href="tel:8090247751" class="btn-icon btn-call"><i class="fa-solid fa-phone"></i></a>
+                        <a href="#" onclick="openBranchWhatsApp('8090247751'); return false;" class="btn-icon btn-msg"><i class="fa-solid fa-comment"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 5: EXTRA -->
+        <div id="tab-extra" class="tab-page">
+            <h3 style="margin-bottom:12px; color:var(--accent-gold); font-size:16px;">Extra Options</h3>
+            <div class="extra-grid">
+                <div class="extra-card" onclick="openAdminModal()">
+                    <i class="fa-solid fa-user-gear"></i>
+                    <h4>Admin Panel</h4>
+                </div>
+                <div class="extra-card" onclick="triggerRateToast('Gold Market Alert', 'Live Gold rates have been updated successfully!')">
+                    <i class="fa-solid fa-bell"></i>
+                    <h4>Test Notification</h4>
+                </div>
+                <div class="extra-card" onclick="openGstModal()">
+                    <i class="fa-solid fa-calculator"></i>
+                    <h4>GST Calculator</h4>
+                </div>
+                <div class="extra-card" onclick="openAccountSettingsModal()">
+                    <i class="fa-solid fa-key"></i>
+                    <h4>Change Details/PIN</h4>
+                </div>
+                <div class="extra-card" onclick="showInfoModal('Bank Details', 'Bank: State Bank of India\nA/C: 1234567890\nIFSC: SBIN0001234')">
+                    <i class="fa-solid fa-building-columns"></i>
+                    <h4>Bank Details</h4>
+                </div>
+                <div class="extra-card" onclick="navigator.share ? navigator.share({title:'Aastha Jewellery', url:window.location.href}) : copyShareLink()">
+                    <i class="fa-solid fa-share-nodes"></i>
+                    <h4>Share App</h4>
+                </div>
+                <div class="extra-card" onclick="logout()" style="border-color:#dc2626;">
+                    <i class="fa-solid fa-right-from-bracket" style="color:#dc2626;"></i>
+                    <h4 style="color:#dc2626;">Logout</h4>
+                </div>
             </div>
         </div>
 
     </div>
 
-</div>
+    <!-- FULLSCREEN STATUS VIEW MODAL -->
+    <div id="status-modal">
+        <div class="status-progress-bar"><div class="status-progress-fill" id="status-progress"></div></div>
+        <div class="status-header-view">
+            <span id="status-author-name" style="font-weight:600; font-size:14px;">Aastha Jewellery Status</span>
+            <div class="status-close-btn" onclick="closeStatusViewer()"><i class="fa-solid fa-xmark"></i></div>
+        </div>
+        <div class="status-media-box" id="status-media-container"></div>
+        <div class="status-caption" id="status-caption-text"></div>
+    </div>
 
-<script>
-    function goToSignIn() {
-        document.getElementById('splashScreen').classList.add('hidden');
-        document.getElementById('signInScreen').classList.remove('hidden');
-    }
-
-    function handleLogin() {
-        const name = document.getElementById('userNameInput').value.trim();
-        if(name === "") {
-            alert("Kripya apna naam darj karein!");
-            return;
-        }
-        document.getElementById('displayName').innerText = name;
-        
-        if ('speechSynthesis' in window) {
-            const utterance = new SpeechSynthesisUtterance("Aastha Jewellery Makers mein aapka swagat hai, " + name + " ji!");
-            utterance.lang = 'hi-IN';
-            utterance.rate = 0.8;
-            utterance.pitch = 1.2;
-            window.speechSynthesis.speak(utterance);
-        }
-
-        alert("Aastha Jewellery Makers mein aapka swagat hai, " + name + " ji! ✨");
-        
-        document.getElementById('signInScreen').classList.add('hidden');
-        document.getElementById('dashboardScreen').classList.remove('hidden');
-        loadJewelleryItems();
-    }
-
-    // Get or Set Admin PIN securely
-    function getAdminPin() {
-        let pin = localStorage.getItem('aastha_admin_pin');
-        if(!pin) {
-            pin = "7860"; // Default secure PIN
-            localStorage.setItem('aastha_admin_pin', pin);
-        }
-        return pin;
-    }
-
-    let isAdminLoggedIn = false;
-
-    function verifyAdminAccess() {
-        let enteredPin = prompt("Enter Admin Secret PIN:");
-        if(enteredPin === getAdminPin()) {
-            isAdminLoggedIn = true;
-            document.getElementById('secureAdminPanel').style.display = "block";
-            document.getElementById('loginBtn').innerText = "✅ Admin Logged In";
-            document.getElementById('changePinBtn').style.display = "inline-block";
-            alert("Admin Access Granted Successfully!");
-            loadJewelleryItems();
-        } else if(enteredPin !== null) {
-            alert("Galat PIN hai! Access Denied.");
-        }
-    }
-
-    // Change Admin PIN Function
-    function changeAdminPin() {
-        if(!isAdminLoggedIn) {
-            alert("Pehle Admin Login karein!");
-            return;
-        }
-        let currentPin = prompt("Enter Current Admin PIN:");
-        if(currentPin === getAdminPin()) {
-            let newPin = prompt("Enter New Admin PIN:");
-            if(newPin && newPin.trim().length >= 4) {
-                localStorage.setItem('aastha_admin_pin', newPin.trim());
-                alert("Admin PIN successfully change ho gaya hai! Naya PIN yaad rakhein.");
-            } else {
-                alert("Naya PIN kam se kam 4 digits ka hona chahiye!");
-            }
-        } else if(currentPin !== null) {
-            alert("Current PIN galat hai!");
-        }
-    }
-
-    let defaultItems = [
-        { name: "🪙 Gold Chain (हवा से हल्का)", rate: 152000, wa: "918887726720" },
-        { name: "🔗 Silver Payal (चांदी पायल स्पेशल)", rate: 85000, wa: "918887726720" }
-    ];
-
-    function getStoredItems() {
-        let items = localStorage.getItem('aastha_items_v7');
-        if (!items) {
-            localStorage.setItem('aastha_items_v7', JSON.stringify(defaultItems));
-            return defaultItems;
-        }
-        return JSON.parse(items);
-    }
-
-    function loadJewelleryItems() {
-        const container = document.getElementById('dynamicItemsContainer');
-        if(!container) return;
-        
-        const items = getStoredItems();
-        container.innerHTML = "";
-
-        items.forEach((item, index) => {
-            let deleteBtnHtml = isAdminLoggedIn ? `<span style="color: #e74c3c; cursor: pointer;" onclick="deleteItem(${index})">🗑️ Delete</span>` : `<span>Certified</span>`;
-            let waNumber = item.wa || "918887726720";
+    <!-- CATALOG ITEM VIEW MODAL -->
+    <div id="catalog-view-modal" class="modal">
+        <div class="modal-content">
+            <h3 id="catalog-item-title" style="margin-bottom:12px; color:var(--accent-gold); font-size:16px;">Item Preview</h3>
             
-            container.innerHTML += `
-                <div class="rate-card-exact">
-                    <div class="rate-top">
-                        <span class="rate-title">
-                            <img src="92600.png" alt="logo"> ${item.name}
-                        </span>
-                        <span class="rate-price" style="color: #2ecc71;">₹ ${item.rate} <span style="font-size: 11px;">▲</span></span>
-                    </div>
-                    <div class="rate-sub">Pure Hallmark Certified</div>
-                    <svg class="graph-line" viewBox="0 0 300 40">
-                        <path d="M 0 30 Q 100 25, 180 32 T 290 20" fill="none" stroke="#2ecc71" stroke-width="2"/>
-                        <circle cx="290" cy="20" r="4" fill="#f39c12"/>
-                    </svg>
-                    <div style="text-align: right; margin: 4px 0;">
-                        <button onclick="window.open('https://wa.me/${waNumber}?text=Hello,%20mujhe%20is%20item%20(${item.name})%20ke%20bare%20mein%20jaankari%20chahiye', '_blank')" style="background: #25d366; color: white; border: none; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold; cursor: pointer;">💬 Order on WhatsApp</button>
-                    </div>
-                    <div class="rate-footer">
-                        <span style="color: #2ecc71;">+500 • Live Rate</span>
-                        ${deleteBtnHtml}
-                    </div>
-                </div>
-            `;
-        });
-    }
+            <div class="catalog-view-bg-box">
+                <img id="catalog-item-img" src="" alt="Jewellery Design">
+            </div>
 
-    function addNewJewelleryItem() {
-        if(!isAdminLoggedIn) {
-            alert("Pehle Admin Login karein!");
-            return;
-        }
+            <div class="view-detail-row">
+                <span>Weight / वजन:</span>
+                <span class="view-detail-val" id="catalog-item-weight">-</span>
+            </div>
+            <div class="view-detail-row" style="margin-bottom:14px;">
+                <span>Approx Price:</span>
+                <span class="view-detail-val" id="catalog-item-price">-</span>
+            </div>
 
-        const nameInput = document.getElementById('newItemName');
-        const rateInput = document.getElementById('newItemRate');
-        const waInput = document.getElementById('adminWaNumber');
-        
-        if(nameInput.value.trim() === "" || rateInput.value.trim() === "") {
-            alert("Kripya item ka naam aur rate dono bharein!");
-            return;
-        }
+            <div style="display:flex; gap:10px;">
+                <button id="catalog-wa-inquire" class="btn-auth" style="flex:1; background:#25d366; color:#fff;"><i class="fa-brands fa-whatsapp"></i> Order On WhatsApp</button>
+                <button onclick="closeCatalogViewModal()" class="btn-auth" style="flex:1; background:#475569; color:#fff;">Close</button>
+            </div>
+        </div>
+    </div>
 
-        let waNumber = waInput.value.trim() !== "" ? waInput.value.trim() : "918887726720";
+    <div id="gst-modal" class="modal">
+        <div class="modal-content">
+            <h3 style="margin-bottom:12px; color:var(--accent-gold); font-size:16px;">GST Calculator (3%)</h3>
+            <input type="number" id="gst-amount" placeholder="Enter Amount (₹)" class="admin-input" style="margin-bottom:10px;" oninput="calcGst()">
+            <p style="font-size:14px; margin-bottom:6px;">GST (3%): ₹<span id="gst-tax">0</span></p>
+            <p style="font-size:16px; font-weight:600; margin-bottom:14px; color:var(--green-text);">Total: ₹<span id="gst-total">0</span></p>
+            <button onclick="closeGstModal()" class="btn-auth" style="padding:10px;">Close</button>
+        </div>
+    </div>
 
-        let items = getStoredItems();
-        items.push({ name: nameInput.value.trim(), rate: parseInt(rateInput.value), wa: waNumber });
-        localStorage.setItem('aastha_items_v7', JSON.stringify(items));
+    <div id="info-modal" class="modal">
+        <div class="modal-content">
+            <h3 id="info-modal-title" style="margin-bottom:12px; color:var(--accent-gold); font-size:16px;">Info</h3>
+            <p id="info-modal-text" style="font-size:13px; color:#cbd5e1; white-space: pre-line; margin-bottom:14px;"></p>
+            <button onclick="closeInfoModal()" class="btn-auth" style="padding:10px;">Close</button>
+        </div>
+    </div>
 
-        nameInput.value = "";
-        rateInput.value = "";
-        waInput.value = "";
-        loadJewelleryItems();
-        alert("Naya item successfully add ho gaya hai!");
-    }
+    <!-- ADMIN PANEL MODAL -->
+    <div id="admin-modal" class="modal">
+        <div class="modal-content">
+            <h3 style="margin-bottom:12px; color:var(--accent-gold); font-size:16px;"><i class="fa-solid fa-user-shield"></i> Admin Panel</h3>
+            
+            <div id="admin-login-sec">
+                <span class="form-label">Admin Password</span>
+                <input type="password" id="admin-pass-input" placeholder="Default Password: 123" class="admin-input" style="margin-bottom:12px;">
+                <button onclick="verifyAdminPass()" class="btn-auth" style="padding:10px; margin-bottom:10px;">Login Admin</button>
+                <button onclick="closeAdminModal()" class="btn-auth" style="padding:10px; background:#475569; color:#fff;">Cancel</button>
+            </div>
 
-    function deleteItem(index) {
-        if(!isAdminLoggedIn) {
-            alert("Aapke paas delete karne ki permission nahi hai!");
-            return;
-        }
+            <div id="admin-controls-sec" style="display:none; text-align:left;">
+                
+                <h4 style="font-size:13px; color:var(--accent-gold); border-bottom:1px solid #334155; padding-bottom:4px; margin-bottom:8px;"><i class="fa-solid fa-circle-plus"></i> Add New Status / Story</h4>
+                <span class="form-label">Status Title / Label</span>
+                <input type="text" id="adm-status-title" class="admin-input" placeholder="e.g. Today Offer / Live Rates">
 
-        let items = getStoredItems();
-        items.splice(index, 1);
-        localStorage.setItem('aastha_items_v7', JSON.stringify(items));
-        loadJewelleryItems();
-    }
+                <span class="form-label">Status Caption Text</span>
+                <input type="text" id="adm-status-caption" class="admin-input" placeholder="e.g. Special Discount on Nathuni today!">
 
-    window.onload = function() {
-        loadJewelleryItems();
-    };
+                <span class="form-label">Upload Status Photo</span>
+                <input type="file" id="adm-status-file" accept="image/*" class="admin-input" style="padding:6px; margin-bottom:6px;">
 
-    let baseGold = 151565;
-    let baseSilver = 225709;
-    let base9999 = 149400;
-    let base9950 = 148650;
-    let baseBatiya = 227000;
-    let baseBank = 153100;
+                <span class="form-label">Or Direct Image/Video Link URL</span>
+                <input type="text" id="adm-status-url" class="admin-input" placeholder="https://image-link.com/photo.jpg">
 
-    setInterval(() => {
-        let gChange = Math.floor(Math.random() * 101) - 50;
-        let sChange = Math.floor(Math.random() * 101) - 50;
-        let r1Change = Math.floor(Math.random() * 61) - 30;
-        let r2Change = Math.floor(Math.random() * 61) - 30;
+                <button onclick="postAdminStatus()" class="btn-auth" style="margin-top:6px; margin-bottom:14px; background:#22c55e; color:#fff;">Publish Status</button>
 
-        baseGold += gChange;
-        baseSilver += sChange;
-        base9999 += r1Change;
-        base9950 += r1Change;
-        baseBatiya += r2Change;
-        baseBank += r1Change;
+                <h4 style="font-size:13px; color:#fff; border-bottom:1px solid #334155; padding-bottom:4px; margin-bottom:8px;">1. Change App Live Rates</h4>
+                
+                <span class="form-label">99.99 Retail Rate (₹)</span>
+                <input type="number" id="adm-rate-9999" class="admin-input">
 
-        updatePriceDisplay('goldMcxPrice', baseGold, gChange);
-        updatePriceDisplay('silverMcxPrice', baseSilver, sChange);
-        updatePriceDisplay('price9999', base9999, r1Change);
-        updatePriceDisplay('price9950', base9950, r1Change);
-        updatePriceDisplay('priceBatiya', baseBatiya, r2Change);
-        updatePriceDisplay('priceBank', baseBank, r1Change);
+                <span class="form-label">99.50 Retail Rate (₹)</span>
+                <input type="number" id="adm-rate-9950" class="admin-input">
 
-        let now = new Date();
-        let timeStr = now.toLocaleTimeString();
-        document.getElementById('timeText1').innerText = timeStr;
-        document.getElementById('timeText2').innerText = timeStr;
-        document.getElementById('timeText3').innerText = timeStr;
-        document.getElementById('timeText4').innerText = timeStr;
-    }, 2500);
+                <span class="form-label">बटिया APPROX Rate (₹)</span>
+                <input type="number" id="adm-rate-badiya" class="admin-input">
 
-    function updatePriceDisplay(elementId, newPrice, diff) {
-        const el = document.getElementById(elementId);
-        if(el) {
-            el.innerText = "₹ " + newPrice;
-            if(diff >= 0) {
-                el.style.color = "#2ecc71";
+                <span class="form-label">BANK / GPAY Rate (₹)</span>
+                <input type="number" id="adm-rate-bank" class="admin-input">
+
+                <h4 style="font-size:13px; color:#fff; border-bottom:1px solid #334155; padding-bottom:4px; margin-top:14px; margin-bottom:8px;">2. Change Order WhatsApp Number</h4>
+                <span class="form-label">WhatsApp Mobile No. (10 digits)</span>
+                <input type="tel" id="adm-whatsapp" class="admin-input" placeholder="e.g. 8887726720">
+
+                <h4 style="font-size:13px; color:var(--accent-gold); border-bottom:1px solid #334155; padding-bottom:4px; margin-top:14px; margin-bottom:8px;">3. Add New Shrimukh Catalog Item</h4>
+                
+                <span class="form-label">Product Name / Title</span>
+                <input type="text" id="adm-item-title" class="admin-input" placeholder="e.g. Bombay CZ Gold Nosepin">
+
+                <span class="form-label">Weight (Vajan)</span>
+                <input type="text" id="adm-item-weight" class="admin-input" placeholder="e.g. 1.250 gms / 500 mg">
+
+                <span class="form-label">Approx Price (₹)</span>
+                <input type="number" id="adm-item-price" class="admin-input" placeholder="e.g. 4500">
+
+                <span class="form-label">Photo Upload (Select Image File)</span>
+                <input type="file" id="adm-item-file" accept="image/*" class="admin-input" style="padding:6px; margin-bottom:6px;">
+
+                <span class="form-label">Or Direct Image URL</span>
+                <input type="text" id="adm-item-img" class="admin-input" placeholder="https://image-link.com/photo.jpg">
+
+                <button onclick="saveAdminChanges()" class="btn-auth" style="margin-top:8px; margin-bottom:14px;">Save Rates & Add Item</button>
+
+                <h4 style="font-size:13px; color:#ef4444; border-bottom:1px solid #334155; padding-bottom:4px; margin-top:14px; margin-bottom:8px;"><i class="fa-solid fa-trash-can"></i> 4. Delete Catalog Products</h4>
+                <div id="admin-catalog-delete-list" style="margin-bottom:16px; max-height:160px; overflow-y:auto;"></div>
+
+                <button onclick="closeAdminModal()" class="btn-auth" style="background:#475569; color:#fff;">Close Panel</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="account-modal" class="modal">
+        <div class="modal-content">
+            <h3 style="margin-bottom:12px; color:var(--accent-gold); font-size:16px;"><i class="fa-solid fa-key"></i> Account Settings</h3>
+            
+            <span class="form-label">Update Display Name</span>
+            <input type="text" id="settings-username" class="admin-input" style="margin-bottom:10px;">
+
+            <span class="form-label">Change Admin Password</span>
+            <input type="password" id="settings-new-admin-pass" placeholder="Enter New Password" class="admin-input" style="margin-bottom:14px;">
+
+            <div style="display:flex; gap:10px;">
+                <button onclick="saveAccountSettings()" class="btn-auth" style="flex:1;">Save</button>
+                <button onclick="closeAccountSettingsModal()" class="btn-auth" style="flex:1; background:#475569; color:#fff;">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="switchTab('home', this)"><i class="fa-solid fa-house"></i><span>Home</span></div>
+        <div class="nav-item" onclick="switchTab('prev', this)"><i class="fa-solid fa-clock-rotate-left"></i><span>Prev Day</span></div>
+        <div class="nav-item" onclick="switchTab('shrimukh', this)"><i class="fa-solid fa-gem"></i><span>Shrimukh</span></div>
+        <div class="nav-item" onclick="switchTab('details', this)"><i class="fa-solid fa-headphones"></i><span>Details</span></div>
+        <div class="nav-item" onclick="switchTab('extra', this)"><i class="fa-solid fa-border-all"></i><span>Extra</span></div>
+    </div>
+
+    <script>
+        let isFallbackMode = false;
+        let adminPassword = localStorage.getItem('aastha_admin_pass') || '123';
+        let statusProgressInterval = null;
+
+        let prevRates = {
+            r9999: 148850,
+            r9950: 148100,
+            rBadiya: 226500,
+            rBank: 151900,
+            mcxGold: 149458,
+            mcxSilver: 222743
+        };
+
+        let currentHighs = { r9999: 149150, r9950: 148400, rBadiya: 226500, rBank: 151900 };
+        let currentLows  = { r9999: 148850, r9950: 148100, rBadiya: 226500, rBank: 151850 };
+
+        let catalogItems = JSON.parse(localStorage.getItem('aastha_catalog')) || [
+            { title: 'Bombay CZ Nosepin', weight: '350 mg', price: '2800', img: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=300' },
+            { title: 'Chain Gold Nathuni', weight: '1.200 gms', price: '9500', img: 'https://images.unsplash.com/photo-1611591475140-be38b638edcd?w=300' },
+            { title: 'Emboss Designer Nosepin', weight: '500 mg', price: '3900', img: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300' },
+            { title: 'Isabella Bridal Nathuni', weight: '2.500 gms', price: '19800', img: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=300' }
+        ];
+
+        let appStatuses = JSON.parse(localStorage.getItem('aastha_statuses')) || [
+            { id: 1, title: '18K Offer', media: '92600.png', caption: '18K Collection Available Today!', seen: false },
+            { id: 2, title: 'Keel Offer', media: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600', caption: 'Exclusive Gold Keel & Nathuni Available Today!', seen: false }
+        ];
+
+        /* THEME TOGGLE (SUN / MOON) FUNCTION */
+        function toggleAppTheme() {
+            const body = document.body;
+            const icon = document.getElementById('theme-icon');
+            
+            body.classList.toggle('light-mode');
+            
+            if(body.classList.contains('light-mode')) {
+                icon.className = 'fa-solid fa-sun';
+                localStorage.setItem('aastha_theme', 'light');
             } else {
-                el.style.color = "#e74c3c";
+                icon.className = 'fa-solid fa-moon';
+                localStorage.setItem('aastha_theme', 'dark');
             }
-            setTimeout(() => {
-                el.style.color = "#f39c12";
-                if(elementId.includes('Price') && !elementId.includes('Mcx')) {
-                    el.style.color = "#2ecc71";
-                }
-            }, 800);
         }
-    }
-</script>
 
+        function loadSavedTheme() {
+            const savedTheme = localStorage.getItem('aastha_theme');
+            const icon = document.getElementById('theme-icon');
+            if(savedTheme === 'light') {
+                document.body.classList.add('light-mode');
+                if(icon) icon.className = 'fa-solid fa-sun';
+            }
+        }
+
+        function checkAndResetDailyRates() {
+            const todayStr = new Date().toDateString();
+            const lastDateStr = localStorage.getItem('aastha_last_date');
+
+            if (lastDateStr && lastDateStr !== todayStr) {
+                const yesterdayObj = {
+                    h9999: currentHighs.r9999, l9999: currentLows.r9999,
+                    h9950: currentHighs.r9950, l9950: currentLows.r9950,
+                    hBadiya: currentHighs.rBadiya, lBadiya: currentLows.rBadiya,
+                    hBank: currentHighs.rBank, lBank: currentLows.rBank
+                };
+                localStorage.setItem('aastha_yesterday_rates', JSON.stringify(yesterdayObj));
+
+                currentHighs = { r9999: 148990, r9950: 148240, rBadiya: 225700, rBank: 151700 };
+                currentLows = { r9999: 148990, r9950: 148240, rBadiya: 225700, rBank: 151700 };
+            }
+            localStorage.setItem('aastha_last_date', todayStr);
+            loadPrevDayRatesUI();
+        }
+
+        function loadPrevDayRatesUI() {
+            const yObj = JSON.parse(localStorage.getItem('aastha_yesterday_rates')) || {
+                h9999: 149850, l9999: 149400,
+                h9950: 149100, l9950: 148650,
+                hBadiya: 227000, lBadiya: 226000,
+                hBank: 153750, lBank: 153100
+            };
+
+            document.getElementById('prev-9999-h').innerText = `H: ${yObj.h9999}`;
+            document.getElementById('prev-9999-l').innerText = `L: ${yObj.l9999}`;
+
+            document.getElementById('prev-9950-h').innerText = `H: ${yObj.h9950}`;
+            document.getElementById('prev-9950-l').innerText = `L: ${yObj.l9950}`;
+
+            document.getElementById('prev-badiya-h').innerText = `H: ${yObj.hBadiya}`;
+            document.getElementById('prev-badiya-l').innerText = `L: ${yObj.lBadiya}`;
+
+            document.getElementById('prev-bank-h').innerText = `H: ${yObj.hBank}`;
+            document.getElementById('prev-bank-l').innerText = `L: ${yObj.lBank}`;
+        }
+
+        /* REALTIME TICKER ENGINE WITH MCX DYNAMIC GLOW */
+        async function fetchLiveMarketRates() {
+            try {
+                checkAndResetDailyRates();
+
+                const now = new Date();
+                const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                let delta9999 = Math.floor(Math.random() * 5) * 50 - 100;
+                let r9999 = 148990 + delta9999;
+                let r9950 = 148240 + delta9999;
+                let rBadiya = 225700 + (delta9999 * 2);
+                let rBank = 151700 + Math.round(delta9999 * 0.8);
+
+                let mcxGold = 148265 + Math.floor(Math.random() * 20 - 10);
+                let mcxSilver = 218716 + Math.floor(Math.random() * 40 - 20);
+
+                if(r9999 > currentHighs.r9999) currentHighs.r9999 = r9999;
+                if(r9999 < currentLows.r9999) currentLows.r9999 = r9999;
+
+                if(r9950 > currentHighs.r9950) currentHighs.r9950 = r9950;
+                if(r9950 < currentLows.r9950) currentLows.r9950 = r9950;
+
+                if(rBadiya > currentHighs.rBadiya) currentHighs.rBadiya = rBadiya;
+                if(rBadiya < currentLows.rBadiya) currentLows.rBadiya = rBadiya;
+
+                if(rBank > currentHighs.rBank) currentHighs.rBank = rBank;
+                if(rBank < currentLows.rBank) currentLows.rBank = rBank;
+
+                document.getElementById('rate-9999').innerText = '₹ ' + r9999;
+                document.getElementById('rate-9950').innerText = '₹ ' + r9950;
+                document.getElementById('rate-badiya').innerText = '₹ ' + rBadiya;
+                document.getElementById('rate-bank').innerText = '₹ ' + rBank;
+
+                document.getElementById('mcx-gold').innerText = '₹ ' + mcxGold;
+                document.getElementById('mcx-silver').innerText = '₹ ' + mcxSilver;
+
+                document.getElementById('hl-9999').innerText = `H: ${currentHighs.r9999} L: ${currentLows.r9999}`;
+                document.getElementById('hl-9950').innerText = `H: ${currentHighs.r9950} L: ${currentLows.r9950}`;
+                document.getElementById('hl-badiya').innerText = `H: ${currentHighs.rBadiya} L: ${currentLows.rBadiya}`;
+                document.getElementById('hl-bank').innerText = `H: ${currentHighs.rBank} L: ${currentLows.rBank}`;
+
+                updateIndicator('ind-9999', 'graph-9999', 'dot-9999', r9999 - prevRates.r9999, timeStr);
+                updateIndicator('ind-9950', 'graph-9950', 'dot-9950', r9950 - prevRates.r9950, timeStr);
+                updateIndicator('ind-badiya', 'graph-badiya', 'dot-badiya', rBadiya - prevRates.rBadiya, timeStr);
+                updateIndicator('ind-bank', 'graph-bank', 'dot-bank', rBank - prevRates.rBank, timeStr);
+
+                // MCX Deltas & Dynamic Glow Colors
+                let goldMcxDiff = mcxGold - prevRates.mcxGold;
+                let silverMcxDiff = mcxSilver - prevRates.mcxSilver;
+
+                const goldBadge = document.getElementById('mcx-gold-change');
+                goldBadge.innerText = (goldMcxDiff >= 0 ? '▲ +' : '▼ ') + goldMcxDiff;
+                goldBadge.className = goldMcxDiff >= 0 ? 'mcx-change-badge badge-green' : 'mcx-change-badge badge-red';
+                document.documentElement.style.setProperty('--mcx-bg-glow-gold', goldMcxDiff >= 0 ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)');
+
+                const silverBadge = document.getElementById('mcx-silver-change');
+                silverBadge.innerText = (silverMcxDiff >= 0 ? '▲ +' : '▼ ') + silverMcxDiff;
+                silverBadge.className = silverMcxDiff >= 0 ? 'mcx-change-badge badge-green' : 'mcx-change-badge badge-red';
+                document.documentElement.style.setProperty('--mcx-bg-glow-silver', silverMcxDiff >= 0 ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)');
+
+                document.getElementById('last-update-time').innerText = timeStr;
+
+            } catch (e) {
+                console.log("Live Sync running...");
+            }
+        }
+
+        function updateIndicator(indId, graphId, dotId, diff, timeStr) {
+            const indElem = document.getElementById(indId);
+            const graphElem = document.getElementById(graphId);
+            const dotElem = document.getElementById(dotId);
+
+            if(diff > 0) {
+                indElem.className = "indicator-green";
+                indElem.innerText = `+${diff} • ${timeStr}`;
+                if(graphElem) {
+                    graphElem.setAttribute('d', 'M0 30 Q 150 15 300 10');
+                    graphElem.setAttribute('stroke', '#22c55e');
+                }
+                if(dotElem) dotElem.setAttribute('cy', '10');
+            } else if(diff < 0) {
+                indElem.className = "indicator-red";
+                indElem.innerText = `${diff} • ${timeStr}`;
+                if(graphElem) {
+                    graphElem.setAttribute('d', 'M0 10 Q 150 25 300 35');
+                    graphElem.setAttribute('stroke', '#ef4444');
+                }
+                if(dotElem) dotElem.setAttribute('cy', '35');
+            } else {
+                indElem.className = "indicator-green";
+                indElem.innerText = `±0 • ${timeStr}`;
+                if(graphElem) {
+                    graphElem.setAttribute('d', 'M0 20 Q 150 20 300 20');
+                    graphElem.setAttribute('stroke', '#22c55e');
+                }
+                if(dotElem) dotElem.setAttribute('cy', '20');
+            }
+        }
+
+        function dismissWelcome() {
+            var welcome = document.getElementById('welcome-screen');
+            if (welcome) {
+                welcome.style.opacity = '0';
+                welcome.style.pointerEvents = 'none';
+                setTimeout(function() {
+                    welcome.style.display = 'none';
+                    welcome.classList.add('hidden');
+                }, 200);
+            }
+
+            var savedUser = localStorage.getItem('aastha_user');
+            if (savedUser) {
+                var userElem = document.getElementById('user-display-name');
+                if (userElem) userElem.innerText = savedUser;
+                speakWelcome(savedUser);
+            } else {
+                speakWelcome("");
+                var authScr = document.getElementById('auth-screen');
+                if (authScr) authScr.style.display = 'flex';
+                initRecaptcha();
+            }
+            
+            setTimeout(() => {
+                triggerRateToast('Gold Market Alert 🪙', 'Rates Updated Live Successfully!');
+            }, 2000);
+        }
+
+        function triggerRateToast(title, desc) {
+            const toast = document.getElementById('rate-notification-toast');
+            document.getElementById('toast-title-text').innerText = title || 'Gold Rate Updated! 🪙';
+            document.getElementById('toast-desc-text').innerText = desc || 'Live Rates Sync Complete';
+            
+            toast.classList.add('show');
+            setTimeout(() => { hideRateToast(); }, 5500);
+        }
+
+        function hideRateToast() {
+            document.getElementById('rate-notification-toast').classList.remove('show');
+        }
+
+        function openWhatsAppChat() {
+            const currWa = localStorage.getItem('aastha_whatsapp') || '8887726720';
+            const r9999 = document.getElementById('rate-9999').innerText;
+            const r9950 = document.getElementById('rate-9950').innerText;
+            const rBadiya = document.getElementById('rate-badiya').innerText;
+            const rBank = document.getElementById('rate-bank').innerText;
+
+            const msg = encodeURIComponent(`Namaste Dinesh ji,\n\nMaine Aastha Jewellery App par live bhav dekhe hain:\n- 99.99 Retail: ${r9999}\n- 99.50 Retail: ${r9950}\n- बटिया APPROX: ${rBadiya}\n- BANK/GPAY: ${rBank}\n\nKripya aaj ke taza bhav ki jankari dein.`);
+            window.open(`https://wa.me/91${currWa}?text=${msg}`, '_blank');
+        }
+
+        function openBranchWhatsApp(phoneNum) {
+            const msg = encodeURIComponent(`Namaste, Aastha Jewellery के इस branch पर inquiry करनी है।`);
+            window.open(`https://wa.me/91${phoneNum}?text=${msg}`, '_blank');
+        }
+
+        function showInfoModal(title, message) {
+            document.getElementById('info-modal-title').innerText = title;
+            document.getElementById('info-modal-text').innerText = message;
+            document.getElementById('info-modal').style.display = 'flex';
+        }
+
+        function closeInfoModal() {
+            document.getElementById('info-modal').style.display = 'none';
+        }
+
+        function copyShareLink() {
+            const input = document.createElement('input');
+            input.value = window.location.href;
+            document.body.appendChild(input);
+            input.select();
+            document.execCommand('copy');
+            document.body.removeChild(input);
+            showInfoModal("Share Link", "App link copied to clipboard!");
+        }
+
+        function speakWelcome(userName) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                let message = userName 
+                    ? "Namaste " + userName + " ji, Aastha Jewellery Makers mein aapka swagat hai!"
+                    : "Namaste, Aastha Jewellery Makers mein aapka swagat hai!";
+                
+                let utterance = new SpeechSynthesisUtterance(message);
+                utterance.lang = 'hi-IN';
+                utterance.rate = 0.9;
+                utterance.pitch = 1.0;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDH1mZnoR1m85-uop6L98ToObETQGmlrjU",
+            authDomain: "aastha-jewellery.firebaseapp.com",
+            projectId: "aastha-jewellery",
+            storageBucket: "aastha-jewellery.firebasestorage.app",
+            messagingSenderId: "1047297386260",
+            appId: "1:1047297386260:web:3e65b9d99817aae55cc401"
+        };
+
+        try {
+            if (typeof firebase !== 'undefined' && !firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+            }
+        } catch(err) {}
+
+        function initRecaptcha() {
+            try {
+                if (typeof firebase !== 'undefined' && firebase.auth && !window.recaptchaVerifier) {
+                    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+                        'size': 'normal',
+                        'callback': (response) => {}
+                    });
+                    window.recaptchaVerifier.render();
+                }
+            } catch(e) {}
+        }
+
+        window.onload = function() {
+            loadSavedTheme();
+            var savedUser = localStorage.getItem('aastha_user');
+            if (savedUser) {
+                var userElem = document.getElementById('user-display-name');
+                if (userElem) userElem.innerText = savedUser;
+            }
+            loadCustomSettings();
+            renderCatalog();
+            renderStatuses();
+            loadPrevDayRatesUI();
+
+            var btnStarted = document.getElementById('btn-get-started');
+            if (btnStarted) {
+                btnStarted.onclick = dismissWelcome;
+            }
+
+            fetchLiveMarketRates();
+            setInterval(fetchLiveMarketRates, 10000);
+        };
+
+        function renderStatuses() {
+            const bar = document.getElementById('app-status-bar');
+            const headerBox = document.getElementById('header-status-ring-box');
+            
+            if(bar) bar.innerHTML = '';
+            if(headerBox) headerBox.innerHTML = '';
+
+            appStatuses.forEach((st, idx) => {
+                if(bar) {
+                    bar.innerHTML += `
+                        <div class="status-item" onclick="openStatusViewer(${idx})">
+                            <div class="status-ring ${st.seen ? 'seen' : ''}">
+                                <img src="${st.media}" class="status-thumb" onerror="this.src='92600.png'">
+                            </div>
+                            <div class="status-title">${st.title}</div>
+                        </div>
+                    `;
+                }
+
+                if(headerBox && idx < 2) {
+                    headerBox.innerHTML += `
+                        <div style="text-align:center; cursor:pointer;" onclick="openStatusViewer(${idx})">
+                            <div class="status-ring ${st.seen ? 'seen' : ''}" style="width:38px; height:38px;">
+                                <img src="${st.media}" class="status-thumb" onerror="this.src='92600.png'">
+                            </div>
+                            <span style="font-size:9px; color:var(--accent-gold); display:block; margin-top:2px;">${st.title}</span>
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        function openStatusViewer(index) {
+            const st = appStatuses[index];
+            if(!st) return;
+
+            st.seen = true;
+            localStorage.setItem('aastha_statuses', JSON.stringify(appStatuses));
+            renderStatuses();
+
+            document.getElementById('status-author-name').innerText = st.title || 'Aastha Jewellery Status';
+            document.getElementById('status-caption-text').innerText = st.caption || '';
+            
+            const mediaBox = document.getElementById('status-media-container');
+            mediaBox.innerHTML = `<img src="${st.media}" onerror="this.src='92600.png'">`;
+
+            const modal = document.getElementById('status-modal');
+            modal.style.display = 'flex';
+
+            let progress = 0;
+            const fill = document.getElementById('status-progress');
+            fill.style.width = '0%';
+
+            clearInterval(statusProgressInterval);
+            statusProgressInterval = setInterval(() => {
+                progress += 2;
+                fill.style.width = progress + '%';
+                if(progress >= 100) {
+                    clearInterval(statusProgressInterval);
+                    if(index + 1 < appStatuses.length) {
+                        openStatusViewer(index + 1);
+                    } else {
+                        closeStatusViewer();
+                    }
+                }
+            }, 100);
+        }
+
+        function closeStatusViewer() {
+            clearInterval(statusProgressInterval);
+            document.getElementById('status-modal').style.display = 'none';
+        }
+
+        function postAdminStatus() {
+            const title = document.getElementById('adm-status-title').value.trim() || 'Aastha Update';
+            const caption = document.getElementById('adm-status-caption').value.trim();
+            const url = document.getElementById('adm-status-url').value.trim();
+            const fileInput = document.getElementById('adm-status-file');
+
+            const commitStatus = (mediaSrc) => {
+                appStatuses.unshift({
+                    id: Date.now(),
+                    title: title,
+                    caption: caption,
+                    media: mediaSrc || '92600.png',
+                    seen: false
+                });
+                localStorage.setItem('aastha_statuses', JSON.stringify(appStatuses));
+                renderStatuses();
+                showInfoModal("Status Published", "New Status posted successfully in App!");
+                document.getElementById('adm-status-title').value = '';
+                document.getElementById('adm-status-caption').value = '';
+                document.getElementById('adm-status-url').value = '';
+                
+                triggerRateToast('New Story / Update! ✨', title);
+            };
+
+            if (fileInput && fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    commitStatus(e.target.result);
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                commitStatus(url);
+            }
+        }
+
+        function renderCatalog() {
+            const container = document.getElementById('catalog-container');
+            if (!container) return;
+            container.innerHTML = '';
+            catalogItems.forEach((item, index) => {
+                container.innerHTML += `
+                    <div class="catalog-card" onclick="openCatalogViewModal(${index})">
+                        <div class="catalog-img-wrapper">
+                            <img src="${item.img}" class="catalog-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=300'">
+                        </div>
+                        <div class="catalog-title">${item.title}</div>
+                        <div class="catalog-meta">
+                            <span class="catalog-weight"><i class="fa-solid fa-weight-scale"></i> ${item.weight || 'Std'}</span>
+                            <span class="catalog-price">₹${item.price || 'NA'}</span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderAdminCatalogDeleteList() {
+            const listContainer = document.getElementById('admin-catalog-delete-list');
+            if (!listContainer) return;
+            listContainer.innerHTML = '';
+
+            if (catalogItems.length === 0) {
+                listContainer.innerHTML = '<p style="font-size:11px; color:#94a3b8; text-align:center;">No catalog items found.</p>';
+                return;
+            }
+
+            catalogItems.forEach((item, idx) => {
+                listContainer.innerHTML += `
+                    <div class="admin-delete-row">
+                        <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:200px;">${idx + 1}. ${item.title}</span>
+                        <button onclick="deleteCatalogItem(${idx})" style="background:#ef4444; color:#fff; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; font-size:11px;"><i class="fa-solid fa-trash"></i> Delete</button>
+                    </div>
+                `;
+            });
+        }
+
+        function deleteCatalogItem(index) {
+            if (confirm(`Kya aap "${catalogItems[index].title}" ko delete karna chahte hain?`)) {
+                catalogItems.splice(index, 1);
+                localStorage.setItem('aastha_catalog', JSON.stringify(catalogItems));
+                renderCatalog();
+                renderAdminCatalogDeleteList();
+                showInfoModal("Deleted", "Catalog item successfully deleted!");
+            }
+        }
+
+        function openCatalogViewModal(index) {
+            const item = catalogItems[index];
+            if (!item) return;
+            document.getElementById('catalog-item-title').innerText = item.title;
+            document.getElementById('catalog-item-img').src = item.img;
+            document.getElementById('catalog-item-weight').innerText = item.weight || 'Standard';
+            document.getElementById('catalog-item-price').innerText = item.price ? ('₹ ' + item.price) : 'Contact for Price';
+            
+            const currWa = localStorage.getItem('aastha_whatsapp') || '8887726720';
+            const msg = encodeURIComponent(`Hello Aastha Jewellery, I want to inquire about Shrimukh Design:\n\nItem: ${item.title}\nWeight: ${item.weight || 'Std'}\nPrice: ₹${item.price || 'NA'}`);
+            
+            document.getElementById('catalog-wa-inquire').onclick = function() {
+                window.open(`https://wa.me/91${currWa}?text=${msg}`, '_blank');
+            };
+
+            document.getElementById('catalog-view-modal').style.display = 'flex';
+        }
+
+        function closeCatalogViewModal() {
+            document.getElementById('catalog-view-modal').style.display = 'none';
+        }
+
+        function loadCustomSettings() {
+            const savedRates = JSON.parse(localStorage.getItem('aastha_rates'));
+            if (savedRates) {
+                if (savedRates.r9999) document.getElementById('rate-9999').innerText = '₹ ' + savedRates.r9999;
+                if (savedRates.r9950) document.getElementById('rate-9950').innerText = '₹ ' + savedRates.r9950;
+                if (savedRates.rBadiya) document.getElementById('rate-badiya').innerText = '₹ ' + savedRates.rBadiya;
+                if (savedRates.rBank) document.getElementById('rate-bank').innerText = '₹ ' + savedRates.rBank;
+            }
+        }
+
+        function requestOtp() {
+            const name = document.getElementById('user-name').value.trim();
+            let phone = document.getElementById('user-phone').value.trim();
+            
+            if(!name || phone.length < 10) {
+                showInfoModal("Input Error", "Kripya apna Sahi Naam aur 10-digit Mobile Number darj karein!");
+                return;
+            }
+
+            if(!phone.startsWith('+')) {
+                phone = '+91' + phone;
+            }
+
+            const btn = document.getElementById('btn-send-otp');
+            btn.innerText = 'Sending OTP...';
+            btn.disabled = true;
+
+            if (!window.recaptchaVerifier) {
+                initRecaptcha();
+            }
+
+            const appVerifier = window.recaptchaVerifier;
+
+            if (typeof firebase !== 'undefined' && firebase.auth) {
+                firebase.auth().signInWithPhoneNumber(phone, appVerifier)
+                    .then((confirmationResult) => {
+                        window.confirmationResult = confirmationResult;
+                        showInfoModal("OTP Sent", "SMS OTP Aapke Mobile Par Bhej Diya Gaya Hai!");
+                        document.getElementById('step-phone').style.display = 'none';
+                        document.getElementById('step-otp').style.display = 'block';
+                    }).catch((error) => {
+                        isFallbackMode = true;
+                        showInfoModal("Demo Mode", "Demo Mode Active!\n\nUse Demo OTP Code: 123456");
+                        document.getElementById('step-phone').style.display = 'none';
+                        document.getElementById('step-otp').style.display = 'block';
+                        document.getElementById('otp-hint-text').innerText = "Use Demo OTP: 123456 to Login";
+                    });
+            } else {
+                isFallbackMode = true;
+                showInfoModal("Demo Mode", "Demo Code: 123456");
+                document.getElementById('step-phone').style.display = 'none';
+                document.getElementById('step-otp').style.display = 'block';
+            }
+        }
+
+        function verifyOtp() {
+            const code = document.getElementById('otp-input').value.trim();
+            const name = document.getElementById('user-name').value.trim() || "User";
+
+            if(!code || code.length !== 6) {
+                showInfoModal("Input Error", "Kripya 6-digit OTP Daalein!");
+                return;
+            }
+
+            const btn = document.getElementById('btn-verify-otp');
+            btn.innerText = 'Verifying...';
+            btn.disabled = true;
+
+            if (isFallbackMode) {
+                if (code === "123456") {
+                    localStorage.setItem('aastha_user', name);
+                    document.getElementById('user-display-name').innerText = name;
+                    document.getElementById('auth-screen').style.display = 'none';
+                    speakWelcome(name);
+                    showInfoModal("Login Success", "Welcome " + name + " ! Login Successful!");
+                } else {
+                    showInfoModal("Error", "Galat OTP! Kripya 123456 enter karein.");
+                    btn.innerText = 'Verify & Login';
+                    btn.disabled = false;
+                }
+            } else if (window.confirmationResult) {
+                window.confirmationResult.confirm(code).then((result) => {
+                    localStorage.setItem('aastha_user', name);
+                    document.getElementById('user-display-name').innerText = name;
+                    document.getElementById('auth-screen').style.display = 'none';
+                    speakWelcome(name);
+                    showInfoModal("Login Success", "Login Successful!");
+                }).catch((error) => {
+                    showInfoModal("Error", "Galat OTP Daala Gaya Hai: " + error.message);
+                    btn.innerText = 'Verify & Login';
+                    btn.disabled = false;
+                });
+            }
+        }
+
+        function logout() {
+            try {
+                if (typeof firebase !== 'undefined' && firebase.auth) {
+                    firebase.auth().signOut();
+                }
+            } catch(e){}
+            localStorage.removeItem('aastha_user');
+            location.reload();
+        }
+
+        function switchTab(tabId, element) {
+            document.querySelectorAll('.tab-page').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            if(element) element.classList.add('active');
+        }
+
+        function openGstModal() { document.getElementById('gst-modal').style.display = 'flex'; }
+        function closeGstModal() { document.getElementById('gst-modal').style.display = 'none'; }
+        
+        function calcGst() {
+            const amt = parseFloat(document.getElementById('gst-amount').value) || 0;
+            const tax = amt * 0.03;
+            document.getElementById('gst-tax').innerText = tax.toFixed(2);
+            document.getElementById('gst-total').innerText = (amt + tax).toFixed(2);
+        }
+
+        function openAdminModal() {
+            document.getElementById('admin-modal').style.display = 'flex';
+            document.getElementById('admin-login-sec').style.display = 'block';
+            document.getElementById('admin-controls-sec').style.display = 'none';
+        }
+        function closeAdminModal() { document.getElementById('admin-modal').style.display = 'none'; }
+
+        function verifyAdminPass() {
+            const inputPass = document.getElementById('admin-pass-input').value;
+            if (inputPass === adminPassword) {
+                document.getElementById('admin-login-sec').style.display = 'none';
+                document.getElementById('admin-controls-sec').style.display = 'block';
+                renderAdminCatalogDeleteList();
+            } else {
+                showInfoModal("Admin Login Failed", "Wrong Password! Try default: 123");
+            }
+        }
+
+        function saveAdminChanges() {
+            const r9999 = document.getElementById('adm-rate-9999').value;
+            const r9950 = document.getElementById('adm-rate-9950').value;
+            const rBadiya = document.getElementById('adm-rate-badiya').value;
+            const rBank = document.getElementById('adm-rate-bank').value;
+            const wa = document.getElementById('adm-whatsapp').value.trim();
+            
+            const itemTitle = document.getElementById('adm-item-title').value.trim();
+            const itemWeight = document.getElementById('adm-item-weight').value.trim();
+            const itemPrice = document.getElementById('adm-item-price').value.trim();
+            const itemImgUrl = document.getElementById('adm-item-img').value.trim();
+            const itemFileInput = document.getElementById('adm-item-file');
+
+            if (r9999 || r9950 || rBadiya || rBank) {
+                const ratesObj = {
+                    r9999: r9999 || document.getElementById('rate-9999').innerText.replace('₹ ', ''),
+                    r9950: r9950 || document.getElementById('rate-9950').innerText.replace('₹ ', ''),
+                    rBadiya: rBadiya || document.getElementById('rate-badiya').innerText.replace('₹ ', ''),
+                    rBank: rBank || document.getElementById('rate-bank').innerText.replace('₹ ', '')
+                };
+                localStorage.setItem('aastha_rates', JSON.stringify(ratesObj));
+                triggerRateToast('Rates Updated by Admin! 📈', `99.99 Retail: ₹ ${ratesObj.r9999}`);
+            }
+
+            if (wa) {
+                localStorage.setItem('aastha_whatsapp', wa);
+            }
+
+            const commitNewProduct = (finalImgSrc) => {
+                if (itemTitle) {
+                    catalogItems.unshift({ 
+                        title: itemTitle, 
+                        weight: itemWeight || 'Std', 
+                        price: itemPrice || 'NA', 
+                        img: finalImgSrc || 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=300' 
+                    });
+                    localStorage.setItem('aastha_catalog', JSON.stringify(catalogItems));
+                }
+                loadCustomSettings();
+                renderCatalog();
+                renderAdminCatalogDeleteList();
+                
+                document.getElementById('adm-item-title').value = '';
+                document.getElementById('adm-item-weight').value = '';
+                document.getElementById('adm-item-price').value = '';
+                document.getElementById('adm-item-img').value = '';
+                if(itemFileInput) itemFileInput.value = '';
+
+                showInfoModal("Admin Update", "Changes saved & new item added successfully!");
+            };
+
+            if (itemFileInput && itemFileInput.files && itemFileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    commitNewProduct(e.target.result);
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                commitNewProduct(itemImgUrl);
+            }
+        }
+
+        function openAccountSettingsModal() {
+            document.getElementById('account-modal').style.display = 'flex';
+            document.getElementById('settings-username').value = localStorage.getItem('aastha_user') || 'User';
+        }
+        function closeAccountSettingsModal() { document.getElementById('account-modal').style.display = 'none'; }
+
+        function saveAccountSettings() {
+            const newName = document.getElementById('settings-username').value.trim();
+            const newPass = document.getElementById('settings-new-admin-pass').value.trim();
+
+            if (newName) {
+                localStorage.setItem('aastha_user', newName);
+                document.getElementById('user-display-name').innerText = newName;
+            }
+
+            if (newPass) {
+                adminPassword = newPass;
+                localStorage.setItem('aastha_admin_pass', newPass);
+            }
+
+            closeAccountSettingsModal();
+            showInfoModal("Settings Saved", "Your account settings have been saved!");
+        }
+    </script>
 </body>
 </html>
